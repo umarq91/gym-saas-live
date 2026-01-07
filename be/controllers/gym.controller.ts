@@ -10,3 +10,10 @@ export const createGym = async (req: Request, res: Response) => {
 
   res.status(201).json({ success: true, data: gym });
 };
+
+
+
+export const addMembers=async (req: Request, res: Response) => {
+
+}
+

@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../db";
 import { config } from "../config/envs";
 
+//todo:add zod validation
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -39,3 +41,7 @@ export const login = async (req: Request, res: Response) => {
     },
   });
 };
+
+
+// TOOD:add staff
+export const addStaff= ()=>{}
