@@ -29,7 +29,7 @@ export const createGymOwner = async(req:Request,res:Response)=>{
 
    await prisma.user.create({
       data:{
-        name,email,password:hashedPass,username,gymId
+        name,email,password:hashedPass,username,gymId,role:"OWNER"
       }
     })
     

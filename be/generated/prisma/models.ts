@@ -11,4 +11,5 @@
 export type * from './models/User'
 export type * from './models/Gym'
 export type * from './models/Member'
+export type * from './models/Fees'
 export type * from './commonInputTypes'

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createMember } from "../controllers/member.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { authorizeRoles } from "../middlewares/rbac-middleware";
 
 export const memberRoutes = Router();
 
@@ -9,5 +10,9 @@ export const memberRoutes = Router();
 memberRoutes.post(
   "/",
   authMiddleware,
+  authorizeRoles("OWNER","STAFF"),
   createMember
 );
+
+
+

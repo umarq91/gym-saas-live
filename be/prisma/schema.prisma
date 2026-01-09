@@ -43,6 +43,8 @@ model Gym {
   users   User[]
   members Member[]
 
+  fees Fees[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -53,8 +55,27 @@ model Member {
   phone String
   email String?
 
-  JoinDate DateTime @default(now())
+  joinDate DateTime @default(now())
   isActive Boolean  @default(true)
+
+
+
+  gymId String
+  gym   Gym    @relation(fields: [gymId], references: [id], onDelete: Cascade)
+
+
+  FeePayment Fees[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Fees {
+  id    String  @id @default(uuid())
+  amount Int
+  
+  memberId String
+  member Member @relation(fields: [memberId],references: [id],onDelete: Cascade)
 
   gymId String
   gym   Gym    @relation(fields: [gymId], references: [id], onDelete: Cascade)

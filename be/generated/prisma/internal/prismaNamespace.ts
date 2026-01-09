@@ -386,7 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Gym: 'Gym',
-  Member: 'Member'
+  Member: 'Member',
+  Fees: 'Fees'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "gym" | "member"
+    modelProps: "user" | "gym" | "member" | "fees"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +629,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Fees: {
+      payload: Prisma.$FeesPayload<ExtArgs>
+      fields: Prisma.FeesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        findFirst: {
+          args: Prisma.FeesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        findMany: {
+          args: Prisma.FeesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>[]
+        }
+        create: {
+          args: Prisma.FeesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        createMany: {
+          args: Prisma.FeesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>[]
+        }
+        delete: {
+          args: Prisma.FeesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        update: {
+          args: Prisma.FeesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        deleteMany: {
+          args: Prisma.FeesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>[]
+        }
+        upsert: {
+          args: Prisma.FeesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeesPayload>
+        }
+        aggregate: {
+          args: Prisma.FeesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFees>
+        }
+        groupBy: {
+          args: Prisma.FeesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeesCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -700,7 +775,7 @@ export const MemberScalarFieldEnum = {
   name: 'name',
   phone: 'phone',
   email: 'email',
-  JoinDate: 'JoinDate',
+  joinDate: 'joinDate',
   isActive: 'isActive',
   gymId: 'gymId',
   createdAt: 'createdAt',
@@ -708,6 +783,18 @@ export const MemberScalarFieldEnum = {
 } as const
 
 export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
+
+
+export const FeesScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  memberId: 'memberId',
+  gymId: 'gymId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeesScalarFieldEnum = (typeof FeesScalarFieldEnum)[keyof typeof FeesScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -816,6 +903,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -914,6 +1015,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   gym?: Prisma.GymOmit
   member?: Prisma.MemberOmit
+  fees?: Prisma.FeesOmit
 }
 
 /* Types for Logging */

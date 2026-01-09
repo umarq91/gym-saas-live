@@ -10,8 +10,11 @@ export const createMember = async (req: Request, res: Response) => {
       phone,
       email,
       gymId: req.user!.gymId!,
+      isActive:true
     },
   });
 
   res.status(201).json({ success: true, data: member });
 };
+
+

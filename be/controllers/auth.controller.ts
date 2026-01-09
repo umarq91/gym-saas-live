@@ -42,6 +42,3 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
-
-// TOOD:add staff
-export const addStaff= ()=>{}

@@ -52,3 +52,8 @@ export type Gym = Prisma.GymModel
  * 
  */
 export type Member = Prisma.MemberModel
+/**
+ * Model Fees
+ * 
+ */
+export type Fees = Prisma.FeesModel
