@@ -118,9 +118,14 @@ export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof 
 
 export const FeesScalarFieldEnum = {
   id: 'id',
-  amount: 'amount',
+  originalAmount: 'originalAmount',
+  amountPaid: 'amountPaid',
+  discountType: 'discountType',
+  discountApplied: 'discountApplied',
   memberId: 'memberId',
   gymId: 'gymId',
+  type: 'type',
+  takenById: 'takenById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

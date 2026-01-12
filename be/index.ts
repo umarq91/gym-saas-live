@@ -3,6 +3,8 @@ import { authRoutes } from "./routes/auth.routes";
 import { internalRoutes } from "./routes/internal.routes";
 
 import { gymRoutes } from "./routes/gym.routes";
+import { feesRoutes } from "./routes/fees.routes";
+
 import { memberRoutes } from "./routes/member.routes";
 import { config } from "./config/envs";
 
@@ -19,3 +21,5 @@ app.use('/internals',internalRoutes)
 app.use("/auth", authRoutes);
 app.use("/gyms", gymRoutes);
 app.use("/members", memberRoutes);
+app.use("/fees", feesRoutes);
+

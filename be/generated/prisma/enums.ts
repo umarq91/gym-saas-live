@@ -24,3 +24,11 @@ export const GymStatus = {
 } as const
 
 export type GymStatus = (typeof GymStatus)[keyof typeof GymStatus]
+
+
+export const DiscountType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FLAT: 'FLAT'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]

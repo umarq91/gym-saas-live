@@ -48,3 +48,32 @@ export const createGymOwner = async(req:Request,res:Response)=>{
   
 
 }
+
+export const createSaasOwner = async(req:Request,res:Response)=>{
+  try {
+    const {name,username,email,password} =  req.body;
+
+
+    const hashedPass = await bcrypt.hash(password,12)
+
+   await prisma.user.create({
+      data:{
+        name,email,password:hashedPass,username,role:"SUPER__USER"
+      }
+    })
+    
+  return res.status(201).json({
+    success:true,
+    message:"A new Gym Owner sccessfully created!"
+  })
+
+  } catch (error) {
+    console.error("ERROR",error)
+    return res.json({
+      success:false,
+      error
+    })
+  }
+  
+
+}
