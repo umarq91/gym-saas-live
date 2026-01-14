@@ -12,14 +12,12 @@ export const app = express();
 
 app.use(express.json());
 
-app.listen(config.port,()=>{
-  console.log("Server started running on port " + config.port)
-})
+app.listen(config.port, () => {
+  console.log("Server started running on port " + config.port);
+});
 
-
-app.use('/internals',internalRoutes)
+app.use("/internals", internalRoutes);
 app.use("/auth", authRoutes);
 app.use("/gyms", gymRoutes);
 app.use("/members", memberRoutes);
 app.use("/fees", feesRoutes);
-
