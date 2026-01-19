@@ -215,7 +215,8 @@ export type MemberWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   gym?: Prisma.XOR<Prisma.GymScalarRelationFilter, Prisma.GymWhereInput>
-  FeePayment?: Prisma.FeesListRelationFilter
+  fees?: Prisma.FeesListRelationFilter
+  attendances?: Prisma.AttendanceListRelationFilter
 }
 
 export type MemberOrderByWithRelationInput = {
@@ -229,7 +230,8 @@ export type MemberOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   gym?: Prisma.GymOrderByWithRelationInput
-  FeePayment?: Prisma.FeesOrderByRelationAggregateInput
+  fees?: Prisma.FeesOrderByRelationAggregateInput
+  attendances?: Prisma.AttendanceOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
@@ -246,7 +248,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   gym?: Prisma.XOR<Prisma.GymScalarRelationFilter, Prisma.GymWhereInput>
-  FeePayment?: Prisma.FeesListRelationFilter
+  fees?: Prisma.FeesListRelationFilter
+  attendances?: Prisma.AttendanceListRelationFilter
 }, "id">
 
 export type MemberOrderByWithAggregationInput = {
@@ -289,7 +292,8 @@ export type MemberCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gym: Prisma.GymCreateNestedOneWithoutMembersInput
-  FeePayment?: Prisma.FeesCreateNestedManyWithoutMemberInput
+  fees?: Prisma.FeesCreateNestedManyWithoutMemberInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUncheckedCreateInput = {
@@ -302,7 +306,8 @@ export type MemberUncheckedCreateInput = {
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  FeePayment?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
+  fees?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUpdateInput = {
@@ -315,7 +320,8 @@ export type MemberUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
-  FeePayment?: Prisma.FeesUpdateManyWithoutMemberNestedInput
+  fees?: Prisma.FeesUpdateManyWithoutMemberNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateInput = {
@@ -328,7 +334,8 @@ export type MemberUncheckedUpdateInput = {
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  FeePayment?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
+  fees?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberCreateManyInput = {
@@ -463,18 +470,32 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type MemberCreateNestedOneWithoutFeePaymentInput = {
-  create?: Prisma.XOR<Prisma.MemberCreateWithoutFeePaymentInput, Prisma.MemberUncheckedCreateWithoutFeePaymentInput>
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutFeePaymentInput
+export type MemberCreateNestedOneWithoutFeesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutFeesInput, Prisma.MemberUncheckedCreateWithoutFeesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutFeesInput
   connect?: Prisma.MemberWhereUniqueInput
 }
 
-export type MemberUpdateOneRequiredWithoutFeePaymentNestedInput = {
-  create?: Prisma.XOR<Prisma.MemberCreateWithoutFeePaymentInput, Prisma.MemberUncheckedCreateWithoutFeePaymentInput>
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutFeePaymentInput
-  upsert?: Prisma.MemberUpsertWithoutFeePaymentInput
+export type MemberUpdateOneRequiredWithoutFeesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutFeesInput, Prisma.MemberUncheckedCreateWithoutFeesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutFeesInput
+  upsert?: Prisma.MemberUpsertWithoutFeesInput
   connect?: Prisma.MemberWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutFeePaymentInput, Prisma.MemberUpdateWithoutFeePaymentInput>, Prisma.MemberUncheckedUpdateWithoutFeePaymentInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutFeesInput, Prisma.MemberUpdateWithoutFeesInput>, Prisma.MemberUncheckedUpdateWithoutFeesInput>
+}
+
+export type MemberCreateNestedOneWithoutAttendancesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutAttendancesInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneRequiredWithoutAttendancesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutAttendancesInput
+  upsert?: Prisma.MemberUpsertWithoutAttendancesInput
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutAttendancesInput, Prisma.MemberUpdateWithoutAttendancesInput>, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
 }
 
 export type MemberCreateWithoutGymInput = {
@@ -486,7 +507,8 @@ export type MemberCreateWithoutGymInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  FeePayment?: Prisma.FeesCreateNestedManyWithoutMemberInput
+  fees?: Prisma.FeesCreateNestedManyWithoutMemberInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUncheckedCreateWithoutGymInput = {
@@ -498,7 +520,8 @@ export type MemberUncheckedCreateWithoutGymInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  FeePayment?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
+  fees?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type MemberCreateOrConnectWithoutGymInput = {
@@ -542,7 +565,7 @@ export type MemberScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
 }
 
-export type MemberCreateWithoutFeePaymentInput = {
+export type MemberCreateWithoutFeesInput = {
   id?: string
   name: string
   phone: string
@@ -552,9 +575,10 @@ export type MemberCreateWithoutFeePaymentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gym: Prisma.GymCreateNestedOneWithoutMembersInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
 }
 
-export type MemberUncheckedCreateWithoutFeePaymentInput = {
+export type MemberUncheckedCreateWithoutFeesInput = {
   id?: string
   name: string
   phone: string
@@ -564,25 +588,26 @@ export type MemberUncheckedCreateWithoutFeePaymentInput = {
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
 }
 
-export type MemberCreateOrConnectWithoutFeePaymentInput = {
+export type MemberCreateOrConnectWithoutFeesInput = {
   where: Prisma.MemberWhereUniqueInput
-  create: Prisma.XOR<Prisma.MemberCreateWithoutFeePaymentInput, Prisma.MemberUncheckedCreateWithoutFeePaymentInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutFeesInput, Prisma.MemberUncheckedCreateWithoutFeesInput>
 }
 
-export type MemberUpsertWithoutFeePaymentInput = {
-  update: Prisma.XOR<Prisma.MemberUpdateWithoutFeePaymentInput, Prisma.MemberUncheckedUpdateWithoutFeePaymentInput>
-  create: Prisma.XOR<Prisma.MemberCreateWithoutFeePaymentInput, Prisma.MemberUncheckedCreateWithoutFeePaymentInput>
+export type MemberUpsertWithoutFeesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutFeesInput, Prisma.MemberUncheckedUpdateWithoutFeesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutFeesInput, Prisma.MemberUncheckedCreateWithoutFeesInput>
   where?: Prisma.MemberWhereInput
 }
 
-export type MemberUpdateToOneWithWhereWithoutFeePaymentInput = {
+export type MemberUpdateToOneWithWhereWithoutFeesInput = {
   where?: Prisma.MemberWhereInput
-  data: Prisma.XOR<Prisma.MemberUpdateWithoutFeePaymentInput, Prisma.MemberUncheckedUpdateWithoutFeePaymentInput>
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutFeesInput, Prisma.MemberUncheckedUpdateWithoutFeesInput>
 }
 
-export type MemberUpdateWithoutFeePaymentInput = {
+export type MemberUpdateWithoutFeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -592,9 +617,10 @@ export type MemberUpdateWithoutFeePaymentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
 }
 
-export type MemberUncheckedUpdateWithoutFeePaymentInput = {
+export type MemberUncheckedUpdateWithoutFeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -604,6 +630,75 @@ export type MemberUncheckedUpdateWithoutFeePaymentInput = {
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberCreateWithoutAttendancesInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  joinDate?: Date | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gym: Prisma.GymCreateNestedOneWithoutMembersInput
+  fees?: Prisma.FeesCreateNestedManyWithoutMemberInput
+}
+
+export type MemberUncheckedCreateWithoutAttendancesInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  joinDate?: Date | string
+  isActive?: boolean
+  gymId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fees?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
+}
+
+export type MemberCreateOrConnectWithoutAttendancesInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
+}
+
+export type MemberUpsertWithoutAttendancesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutAttendancesInput, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutAttendancesInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutAttendancesInput, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
+}
+
+export type MemberUpdateWithoutAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
+  fees?: Prisma.FeesUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gymId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fees?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberCreateManyGymInput = {
@@ -626,7 +721,8 @@ export type MemberUpdateWithoutGymInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  FeePayment?: Prisma.FeesUpdateManyWithoutMemberNestedInput
+  fees?: Prisma.FeesUpdateManyWithoutMemberNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutGymInput = {
@@ -638,7 +734,8 @@ export type MemberUncheckedUpdateWithoutGymInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  FeePayment?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
+  fees?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutGymInput = {
@@ -658,11 +755,13 @@ export type MemberUncheckedUpdateManyWithoutGymInput = {
  */
 
 export type MemberCountOutputType = {
-  FeePayment: number
+  fees: number
+  attendances: number
 }
 
 export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  FeePayment?: boolean | MemberCountOutputTypeCountFeePaymentArgs
+  fees?: boolean | MemberCountOutputTypeCountFeesArgs
+  attendances?: boolean | MemberCountOutputTypeCountAttendancesArgs
 }
 
 /**
@@ -678,8 +777,15 @@ export type MemberCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * MemberCountOutputType without action
  */
-export type MemberCountOutputTypeCountFeePaymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type MemberCountOutputTypeCountFeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FeesWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceWhereInput
 }
 
 
@@ -694,7 +800,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   gym?: boolean | Prisma.GymDefaultArgs<ExtArgs>
-  FeePayment?: boolean | Prisma.Member$FeePaymentArgs<ExtArgs>
+  fees?: boolean | Prisma.Member$feesArgs<ExtArgs>
+  attendances?: boolean | Prisma.Member$attendancesArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
@@ -739,7 +846,8 @@ export type MemberSelectScalar = {
 export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "email" | "joinDate" | "isActive" | "gymId" | "createdAt" | "updatedAt", ExtArgs["result"]["member"]>
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gym?: boolean | Prisma.GymDefaultArgs<ExtArgs>
-  FeePayment?: boolean | Prisma.Member$FeePaymentArgs<ExtArgs>
+  fees?: boolean | Prisma.Member$feesArgs<ExtArgs>
+  attendances?: boolean | Prisma.Member$attendancesArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -753,7 +861,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Member"
   objects: {
     gym: Prisma.$GymPayload<ExtArgs>
-    FeePayment: Prisma.$FeesPayload<ExtArgs>[]
+    fees: Prisma.$FeesPayload<ExtArgs>[]
+    attendances: Prisma.$AttendancePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1160,7 +1269,8 @@ readonly fields: MemberFieldRefs;
 export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   gym<T extends Prisma.GymDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GymDefaultArgs<ExtArgs>>): Prisma.Prisma__GymClient<runtime.Types.Result.GetResult<Prisma.$GymPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  FeePayment<T extends Prisma.Member$FeePaymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$FeePaymentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fees<T extends Prisma.Member$feesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$feesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendances<T extends Prisma.Member$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1595,9 +1705,9 @@ export type MemberDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Member.FeePayment
+ * Member.fees
  */
-export type Member$FeePaymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Member$feesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Fees
    */
@@ -1616,6 +1726,30 @@ export type Member$FeePaymentArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.FeesScalarFieldEnum | Prisma.FeesScalarFieldEnum[]
+}
+
+/**
+ * Member.attendances
+ */
+export type Member$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Attendance
+   */
+  select?: Prisma.AttendanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Attendance
+   */
+  omit?: Prisma.AttendanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceInclude<ExtArgs> | null
+  where?: Prisma.AttendanceWhereInput
+  orderBy?: Prisma.AttendanceOrderByWithRelationInput | Prisma.AttendanceOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
 }
 
 /**

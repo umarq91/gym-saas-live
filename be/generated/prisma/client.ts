@@ -57,3 +57,8 @@ export type Member = Prisma.MemberModel
  * 
  */
 export type Fees = Prisma.FeesModel
+/**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel

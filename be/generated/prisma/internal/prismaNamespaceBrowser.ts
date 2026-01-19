@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Gym: 'Gym',
   Member: 'Member',
-  Fees: 'Fees'
+  Fees: 'Fees',
+  Attendance: 'Attendance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -131,6 +132,20 @@ export const FeesScalarFieldEnum = {
 } as const
 
 export type FeesScalarFieldEnum = (typeof FeesScalarFieldEnum)[keyof typeof FeesScalarFieldEnum]
+
+
+export const AttendanceScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  memberId: 'memberId',
+  gymId: 'gymId',
+  markedById: 'markedById',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
 
 
 export const SortOrder = {

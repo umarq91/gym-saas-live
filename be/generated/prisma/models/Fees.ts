@@ -223,8 +223,8 @@ export type FeesGroupByOutputType = {
   id: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType: $Enums.DiscountType | null
+  discountApplied: string | null
   memberId: string
   gymId: string
   type: string
@@ -260,8 +260,8 @@ export type FeesWhereInput = {
   id?: Prisma.StringFilter<"Fees"> | string
   originalAmount?: Prisma.IntFilter<"Fees"> | number
   amountPaid?: Prisma.IntFilter<"Fees"> | number
-  discountType?: Prisma.EnumDiscountTypeFilter<"Fees"> | $Enums.DiscountType
-  discountApplied?: Prisma.StringFilter<"Fees"> | string
+  discountType?: Prisma.EnumDiscountTypeNullableFilter<"Fees"> | $Enums.DiscountType | null
+  discountApplied?: Prisma.StringNullableFilter<"Fees"> | string | null
   memberId?: Prisma.StringFilter<"Fees"> | string
   gymId?: Prisma.StringFilter<"Fees"> | string
   type?: Prisma.StringFilter<"Fees"> | string
@@ -277,8 +277,8 @@ export type FeesOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   originalAmount?: Prisma.SortOrder
   amountPaid?: Prisma.SortOrder
-  discountType?: Prisma.SortOrder
-  discountApplied?: Prisma.SortOrder
+  discountType?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountApplied?: Prisma.SortOrderInput | Prisma.SortOrder
   memberId?: Prisma.SortOrder
   gymId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -292,30 +292,30 @@ export type FeesOrderByWithRelationInput = {
 
 export type FeesWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  takenById?: string
   AND?: Prisma.FeesWhereInput | Prisma.FeesWhereInput[]
   OR?: Prisma.FeesWhereInput[]
   NOT?: Prisma.FeesWhereInput | Prisma.FeesWhereInput[]
   originalAmount?: Prisma.IntFilter<"Fees"> | number
   amountPaid?: Prisma.IntFilter<"Fees"> | number
-  discountType?: Prisma.EnumDiscountTypeFilter<"Fees"> | $Enums.DiscountType
-  discountApplied?: Prisma.StringFilter<"Fees"> | string
+  discountType?: Prisma.EnumDiscountTypeNullableFilter<"Fees"> | $Enums.DiscountType | null
+  discountApplied?: Prisma.StringNullableFilter<"Fees"> | string | null
   memberId?: Prisma.StringFilter<"Fees"> | string
   gymId?: Prisma.StringFilter<"Fees"> | string
   type?: Prisma.StringFilter<"Fees"> | string
+  takenById?: Prisma.StringFilter<"Fees"> | string
   createdAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
   gym?: Prisma.XOR<Prisma.GymScalarRelationFilter, Prisma.GymWhereInput>
   takenBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "takenById">
+}, "id">
 
 export type FeesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   originalAmount?: Prisma.SortOrder
   amountPaid?: Prisma.SortOrder
-  discountType?: Prisma.SortOrder
-  discountApplied?: Prisma.SortOrder
+  discountType?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountApplied?: Prisma.SortOrderInput | Prisma.SortOrder
   memberId?: Prisma.SortOrder
   gymId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -336,8 +336,8 @@ export type FeesScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Fees"> | string
   originalAmount?: Prisma.IntWithAggregatesFilter<"Fees"> | number
   amountPaid?: Prisma.IntWithAggregatesFilter<"Fees"> | number
-  discountType?: Prisma.EnumDiscountTypeWithAggregatesFilter<"Fees"> | $Enums.DiscountType
-  discountApplied?: Prisma.StringWithAggregatesFilter<"Fees"> | string
+  discountType?: Prisma.EnumDiscountTypeNullableWithAggregatesFilter<"Fees"> | $Enums.DiscountType | null
+  discountApplied?: Prisma.StringNullableWithAggregatesFilter<"Fees"> | string | null
   memberId?: Prisma.StringWithAggregatesFilter<"Fees"> | string
   gymId?: Prisma.StringWithAggregatesFilter<"Fees"> | string
   type?: Prisma.StringWithAggregatesFilter<"Fees"> | string
@@ -350,12 +350,12 @@ export type FeesCreateInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   type: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  member: Prisma.MemberCreateNestedOneWithoutFeePaymentInput
+  member: Prisma.MemberCreateNestedOneWithoutFeesInput
   gym: Prisma.GymCreateNestedOneWithoutFeesInput
   takenBy: Prisma.UserCreateNestedOneWithoutFeesCollectedInput
 }
@@ -364,8 +364,8 @@ export type FeesUncheckedCreateInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   memberId: string
   gymId: string
   type: string
@@ -378,12 +378,12 @@ export type FeesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  member?: Prisma.MemberUpdateOneRequiredWithoutFeePaymentNestedInput
+  member?: Prisma.MemberUpdateOneRequiredWithoutFeesNestedInput
   gym?: Prisma.GymUpdateOneRequiredWithoutFeesNestedInput
   takenBy?: Prisma.UserUpdateOneRequiredWithoutFeesCollectedNestedInput
 }
@@ -392,8 +392,8 @@ export type FeesUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -406,8 +406,8 @@ export type FeesCreateManyInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   memberId: string
   gymId: string
   type: string
@@ -420,8 +420,8 @@ export type FeesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -431,19 +431,14 @@ export type FeesUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   takenById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type FeesNullableScalarRelationFilter = {
-  is?: Prisma.FeesWhereInput | null
-  isNot?: Prisma.FeesWhereInput | null
 }
 
 export type FeesListRelationFilter = {
@@ -508,36 +503,46 @@ export type FeesSumOrderByAggregateInput = {
   amountPaid?: Prisma.SortOrder
 }
 
-export type FeesCreateNestedOneWithoutTakenByInput = {
-  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
-  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput
-  connect?: Prisma.FeesWhereUniqueInput
+export type FeesCreateNestedManyWithoutTakenByInput = {
+  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput> | Prisma.FeesCreateWithoutTakenByInput[] | Prisma.FeesUncheckedCreateWithoutTakenByInput[]
+  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput | Prisma.FeesCreateOrConnectWithoutTakenByInput[]
+  createMany?: Prisma.FeesCreateManyTakenByInputEnvelope
+  connect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
 }
 
-export type FeesUncheckedCreateNestedOneWithoutTakenByInput = {
-  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
-  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput
-  connect?: Prisma.FeesWhereUniqueInput
+export type FeesUncheckedCreateNestedManyWithoutTakenByInput = {
+  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput> | Prisma.FeesCreateWithoutTakenByInput[] | Prisma.FeesUncheckedCreateWithoutTakenByInput[]
+  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput | Prisma.FeesCreateOrConnectWithoutTakenByInput[]
+  createMany?: Prisma.FeesCreateManyTakenByInputEnvelope
+  connect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
 }
 
-export type FeesUpdateOneWithoutTakenByNestedInput = {
-  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
-  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput
-  upsert?: Prisma.FeesUpsertWithoutTakenByInput
-  disconnect?: Prisma.FeesWhereInput | boolean
-  delete?: Prisma.FeesWhereInput | boolean
-  connect?: Prisma.FeesWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.FeesUpdateToOneWithWhereWithoutTakenByInput, Prisma.FeesUpdateWithoutTakenByInput>, Prisma.FeesUncheckedUpdateWithoutTakenByInput>
+export type FeesUpdateManyWithoutTakenByNestedInput = {
+  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput> | Prisma.FeesCreateWithoutTakenByInput[] | Prisma.FeesUncheckedCreateWithoutTakenByInput[]
+  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput | Prisma.FeesCreateOrConnectWithoutTakenByInput[]
+  upsert?: Prisma.FeesUpsertWithWhereUniqueWithoutTakenByInput | Prisma.FeesUpsertWithWhereUniqueWithoutTakenByInput[]
+  createMany?: Prisma.FeesCreateManyTakenByInputEnvelope
+  set?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  disconnect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  delete?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  connect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  update?: Prisma.FeesUpdateWithWhereUniqueWithoutTakenByInput | Prisma.FeesUpdateWithWhereUniqueWithoutTakenByInput[]
+  updateMany?: Prisma.FeesUpdateManyWithWhereWithoutTakenByInput | Prisma.FeesUpdateManyWithWhereWithoutTakenByInput[]
+  deleteMany?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
 }
 
-export type FeesUncheckedUpdateOneWithoutTakenByNestedInput = {
-  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
-  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput
-  upsert?: Prisma.FeesUpsertWithoutTakenByInput
-  disconnect?: Prisma.FeesWhereInput | boolean
-  delete?: Prisma.FeesWhereInput | boolean
-  connect?: Prisma.FeesWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.FeesUpdateToOneWithWhereWithoutTakenByInput, Prisma.FeesUpdateWithoutTakenByInput>, Prisma.FeesUncheckedUpdateWithoutTakenByInput>
+export type FeesUncheckedUpdateManyWithoutTakenByNestedInput = {
+  create?: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput> | Prisma.FeesCreateWithoutTakenByInput[] | Prisma.FeesUncheckedCreateWithoutTakenByInput[]
+  connectOrCreate?: Prisma.FeesCreateOrConnectWithoutTakenByInput | Prisma.FeesCreateOrConnectWithoutTakenByInput[]
+  upsert?: Prisma.FeesUpsertWithWhereUniqueWithoutTakenByInput | Prisma.FeesUpsertWithWhereUniqueWithoutTakenByInput[]
+  createMany?: Prisma.FeesCreateManyTakenByInputEnvelope
+  set?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  disconnect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  delete?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  connect?: Prisma.FeesWhereUniqueInput | Prisma.FeesWhereUniqueInput[]
+  update?: Prisma.FeesUpdateWithWhereUniqueWithoutTakenByInput | Prisma.FeesUpdateWithWhereUniqueWithoutTakenByInput[]
+  updateMany?: Prisma.FeesUpdateManyWithWhereWithoutTakenByInput | Prisma.FeesUpdateManyWithWhereWithoutTakenByInput[]
+  deleteMany?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
 }
 
 export type FeesCreateNestedManyWithoutGymInput = {
@@ -632,20 +637,20 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type EnumDiscountTypeFieldUpdateOperationsInput = {
-  set?: $Enums.DiscountType
+export type NullableEnumDiscountTypeFieldUpdateOperationsInput = {
+  set?: $Enums.DiscountType | null
 }
 
 export type FeesCreateWithoutTakenByInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   type: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  member: Prisma.MemberCreateNestedOneWithoutFeePaymentInput
+  member: Prisma.MemberCreateNestedOneWithoutFeesInput
   gym: Prisma.GymCreateNestedOneWithoutFeesInput
 }
 
@@ -653,8 +658,8 @@ export type FeesUncheckedCreateWithoutTakenByInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   memberId: string
   gymId: string
   type: string
@@ -667,53 +672,54 @@ export type FeesCreateOrConnectWithoutTakenByInput = {
   create: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
 }
 
-export type FeesUpsertWithoutTakenByInput = {
-  update: Prisma.XOR<Prisma.FeesUpdateWithoutTakenByInput, Prisma.FeesUncheckedUpdateWithoutTakenByInput>
-  create: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
-  where?: Prisma.FeesWhereInput
+export type FeesCreateManyTakenByInputEnvelope = {
+  data: Prisma.FeesCreateManyTakenByInput | Prisma.FeesCreateManyTakenByInput[]
+  skipDuplicates?: boolean
 }
 
-export type FeesUpdateToOneWithWhereWithoutTakenByInput = {
-  where?: Prisma.FeesWhereInput
+export type FeesUpsertWithWhereUniqueWithoutTakenByInput = {
+  where: Prisma.FeesWhereUniqueInput
+  update: Prisma.XOR<Prisma.FeesUpdateWithoutTakenByInput, Prisma.FeesUncheckedUpdateWithoutTakenByInput>
+  create: Prisma.XOR<Prisma.FeesCreateWithoutTakenByInput, Prisma.FeesUncheckedCreateWithoutTakenByInput>
+}
+
+export type FeesUpdateWithWhereUniqueWithoutTakenByInput = {
+  where: Prisma.FeesWhereUniqueInput
   data: Prisma.XOR<Prisma.FeesUpdateWithoutTakenByInput, Prisma.FeesUncheckedUpdateWithoutTakenByInput>
 }
 
-export type FeesUpdateWithoutTakenByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  member?: Prisma.MemberUpdateOneRequiredWithoutFeePaymentNestedInput
-  gym?: Prisma.GymUpdateOneRequiredWithoutFeesNestedInput
+export type FeesUpdateManyWithWhereWithoutTakenByInput = {
+  where: Prisma.FeesScalarWhereInput
+  data: Prisma.XOR<Prisma.FeesUpdateManyMutationInput, Prisma.FeesUncheckedUpdateManyWithoutTakenByInput>
 }
 
-export type FeesUncheckedUpdateWithoutTakenByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
-  amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
-  memberId?: Prisma.StringFieldUpdateOperationsInput | string
-  gymId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type FeesScalarWhereInput = {
+  AND?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
+  OR?: Prisma.FeesScalarWhereInput[]
+  NOT?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
+  id?: Prisma.StringFilter<"Fees"> | string
+  originalAmount?: Prisma.IntFilter<"Fees"> | number
+  amountPaid?: Prisma.IntFilter<"Fees"> | number
+  discountType?: Prisma.EnumDiscountTypeNullableFilter<"Fees"> | $Enums.DiscountType | null
+  discountApplied?: Prisma.StringNullableFilter<"Fees"> | string | null
+  memberId?: Prisma.StringFilter<"Fees"> | string
+  gymId?: Prisma.StringFilter<"Fees"> | string
+  type?: Prisma.StringFilter<"Fees"> | string
+  takenById?: Prisma.StringFilter<"Fees"> | string
+  createdAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
 }
 
 export type FeesCreateWithoutGymInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   type: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  member: Prisma.MemberCreateNestedOneWithoutFeePaymentInput
+  member: Prisma.MemberCreateNestedOneWithoutFeesInput
   takenBy: Prisma.UserCreateNestedOneWithoutFeesCollectedInput
 }
 
@@ -721,8 +727,8 @@ export type FeesUncheckedCreateWithoutGymInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   memberId: string
   type: string
   takenById: string
@@ -756,29 +762,12 @@ export type FeesUpdateManyWithWhereWithoutGymInput = {
   data: Prisma.XOR<Prisma.FeesUpdateManyMutationInput, Prisma.FeesUncheckedUpdateManyWithoutGymInput>
 }
 
-export type FeesScalarWhereInput = {
-  AND?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
-  OR?: Prisma.FeesScalarWhereInput[]
-  NOT?: Prisma.FeesScalarWhereInput | Prisma.FeesScalarWhereInput[]
-  id?: Prisma.StringFilter<"Fees"> | string
-  originalAmount?: Prisma.IntFilter<"Fees"> | number
-  amountPaid?: Prisma.IntFilter<"Fees"> | number
-  discountType?: Prisma.EnumDiscountTypeFilter<"Fees"> | $Enums.DiscountType
-  discountApplied?: Prisma.StringFilter<"Fees"> | string
-  memberId?: Prisma.StringFilter<"Fees"> | string
-  gymId?: Prisma.StringFilter<"Fees"> | string
-  type?: Prisma.StringFilter<"Fees"> | string
-  takenById?: Prisma.StringFilter<"Fees"> | string
-  createdAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Fees"> | Date | string
-}
-
 export type FeesCreateWithoutMemberInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   type: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -790,8 +779,8 @@ export type FeesUncheckedCreateWithoutMemberInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   gymId: string
   type: string
   takenById: string
@@ -825,12 +814,64 @@ export type FeesUpdateManyWithWhereWithoutMemberInput = {
   data: Prisma.XOR<Prisma.FeesUpdateManyMutationInput, Prisma.FeesUncheckedUpdateManyWithoutMemberInput>
 }
 
+export type FeesCreateManyTakenByInput = {
+  id?: string
+  originalAmount: number
+  amountPaid: number
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
+  memberId: string
+  gymId: string
+  type: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type FeesUpdateWithoutTakenByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  member?: Prisma.MemberUpdateOneRequiredWithoutFeesNestedInput
+  gym?: Prisma.GymUpdateOneRequiredWithoutFeesNestedInput
+}
+
+export type FeesUncheckedUpdateWithoutTakenByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  gymId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type FeesUncheckedUpdateManyWithoutTakenByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  gymId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type FeesCreateManyGymInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   memberId: string
   type: string
   takenById: string
@@ -842,12 +883,12 @@ export type FeesUpdateWithoutGymInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  member?: Prisma.MemberUpdateOneRequiredWithoutFeePaymentNestedInput
+  member?: Prisma.MemberUpdateOneRequiredWithoutFeesNestedInput
   takenBy?: Prisma.UserUpdateOneRequiredWithoutFeesCollectedNestedInput
 }
 
@@ -855,8 +896,8 @@ export type FeesUncheckedUpdateWithoutGymInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   takenById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -868,8 +909,8 @@ export type FeesUncheckedUpdateManyWithoutGymInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   takenById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -881,8 +922,8 @@ export type FeesCreateManyMemberInput = {
   id?: string
   originalAmount: number
   amountPaid: number
-  discountType: $Enums.DiscountType
-  discountApplied: string
+  discountType?: $Enums.DiscountType | null
+  discountApplied?: string | null
   gymId: string
   type: string
   takenById: string
@@ -894,8 +935,8 @@ export type FeesUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -907,8 +948,8 @@ export type FeesUncheckedUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   takenById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -920,8 +961,8 @@ export type FeesUncheckedUpdateManyWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalAmount?: Prisma.IntFieldUpdateOperationsInput | number
   amountPaid?: Prisma.IntFieldUpdateOperationsInput | number
-  discountType?: Prisma.EnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType
-  discountApplied?: Prisma.StringFieldUpdateOperationsInput | string
+  discountType?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discountApplied?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   takenById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1024,8 +1065,8 @@ export type $FeesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     originalAmount: number
     amountPaid: number
-    discountType: $Enums.DiscountType
-    discountApplied: string
+    discountType: $Enums.DiscountType | null
+    discountApplied: string | null
     memberId: string
     gymId: string
     type: string
