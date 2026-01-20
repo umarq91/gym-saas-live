@@ -32,3 +32,12 @@ export const DiscountType = {
 } as const
 
 export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const GYMPLANS = {
+  FREE: 'FREE',
+  BASIC: 'BASIC',
+  PRO: 'PRO'
+} as const
+
+export type GYMPLANS = (typeof GYMPLANS)[keyof typeof GYMPLANS]

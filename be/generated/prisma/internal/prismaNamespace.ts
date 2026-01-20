@@ -838,6 +838,7 @@ export const GymScalarFieldEnum = {
   address: 'address',
   googleMapAddress: 'googleMapAddress',
   status: 'status',
+  plan: 'plan',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -974,6 +975,20 @@ export type EnumGymStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'GymStatus[]'
  */
 export type ListEnumGymStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GymStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GYMPLANS'
+ */
+export type EnumGYMPLANSFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GYMPLANS'>
+    
+
+
+/**
+ * Reference to a field of type 'GYMPLANS[]'
+ */
+export type ListEnumGYMPLANSFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GYMPLANS[]'>
     
 
 

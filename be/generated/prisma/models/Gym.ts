@@ -30,6 +30,7 @@ export type GymMinAggregateOutputType = {
   address: string | null
   googleMapAddress: string | null
   status: $Enums.GymStatus | null
+  plan: $Enums.GYMPLANS | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +41,7 @@ export type GymMaxAggregateOutputType = {
   address: string | null
   googleMapAddress: string | null
   status: $Enums.GymStatus | null
+  plan: $Enums.GYMPLANS | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,7 @@ export type GymCountAggregateOutputType = {
   address: number
   googleMapAddress: number
   status: number
+  plan: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +65,7 @@ export type GymMinAggregateInputType = {
   address?: true
   googleMapAddress?: true
   status?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +76,7 @@ export type GymMaxAggregateInputType = {
   address?: true
   googleMapAddress?: true
   status?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +87,7 @@ export type GymCountAggregateInputType = {
   address?: true
   googleMapAddress?: true
   status?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +171,7 @@ export type GymGroupByOutputType = {
   address: string
   googleMapAddress: string | null
   status: $Enums.GymStatus
+  plan: $Enums.GYMPLANS
   createdAt: Date
   updatedAt: Date
   _count: GymCountAggregateOutputType | null
@@ -196,6 +203,7 @@ export type GymWhereInput = {
   address?: Prisma.StringFilter<"Gym"> | string
   googleMapAddress?: Prisma.StringNullableFilter<"Gym"> | string | null
   status?: Prisma.EnumGymStatusFilter<"Gym"> | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFilter<"Gym"> | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFilter<"Gym"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Gym"> | Date | string
   users?: Prisma.UserListRelationFilter
@@ -210,6 +218,7 @@ export type GymOrderByWithRelationInput = {
   address?: Prisma.SortOrder
   googleMapAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
@@ -227,6 +236,7 @@ export type GymWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.StringFilter<"Gym"> | string
   googleMapAddress?: Prisma.StringNullableFilter<"Gym"> | string | null
   status?: Prisma.EnumGymStatusFilter<"Gym"> | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFilter<"Gym"> | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFilter<"Gym"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Gym"> | Date | string
   users?: Prisma.UserListRelationFilter
@@ -241,6 +251,7 @@ export type GymOrderByWithAggregationInput = {
   address?: Prisma.SortOrder
   googleMapAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.GymCountOrderByAggregateInput
@@ -257,6 +268,7 @@ export type GymScalarWhereWithAggregatesInput = {
   address?: Prisma.StringWithAggregatesFilter<"Gym"> | string
   googleMapAddress?: Prisma.StringNullableWithAggregatesFilter<"Gym"> | string | null
   status?: Prisma.EnumGymStatusWithAggregatesFilter<"Gym"> | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSWithAggregatesFilter<"Gym"> | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Gym"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Gym"> | Date | string
 }
@@ -267,6 +279,7 @@ export type GymCreateInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutGymInput
@@ -281,6 +294,7 @@ export type GymUncheckedCreateInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutGymInput
@@ -295,6 +309,7 @@ export type GymUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutGymNestedInput
@@ -309,6 +324,7 @@ export type GymUncheckedUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutGymNestedInput
@@ -323,6 +339,7 @@ export type GymCreateManyInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -333,6 +350,7 @@ export type GymUpdateManyMutationInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -343,6 +361,7 @@ export type GymUncheckedUpdateManyInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -358,6 +377,7 @@ export type GymCountOrderByAggregateInput = {
   address?: Prisma.SortOrder
   googleMapAddress?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -368,6 +388,7 @@ export type GymMaxOrderByAggregateInput = {
   address?: Prisma.SortOrder
   googleMapAddress?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -378,6 +399,7 @@ export type GymMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   googleMapAddress?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,6 +427,10 @@ export type GymUpdateOneWithoutUsersNestedInput = {
 
 export type EnumGymStatusFieldUpdateOperationsInput = {
   set?: $Enums.GymStatus
+}
+
+export type EnumGYMPLANSFieldUpdateOperationsInput = {
+  set?: $Enums.GYMPLANS
 }
 
 export type GymCreateNestedOneWithoutMembersInput = {
@@ -455,6 +481,7 @@ export type GymCreateWithoutUsersInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.MemberCreateNestedManyWithoutGymInput
@@ -468,6 +495,7 @@ export type GymUncheckedCreateWithoutUsersInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutGymInput
@@ -497,6 +525,7 @@ export type GymUpdateWithoutUsersInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.MemberUpdateManyWithoutGymNestedInput
@@ -510,6 +539,7 @@ export type GymUncheckedUpdateWithoutUsersInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.MemberUncheckedUpdateManyWithoutGymNestedInput
@@ -523,6 +553,7 @@ export type GymCreateWithoutMembersInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutGymInput
@@ -536,6 +567,7 @@ export type GymUncheckedCreateWithoutMembersInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutGymInput
@@ -565,6 +597,7 @@ export type GymUpdateWithoutMembersInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutGymNestedInput
@@ -578,6 +611,7 @@ export type GymUncheckedUpdateWithoutMembersInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutGymNestedInput
@@ -591,6 +625,7 @@ export type GymCreateWithoutFeesInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutGymInput
@@ -604,6 +639,7 @@ export type GymUncheckedCreateWithoutFeesInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutGymInput
@@ -633,6 +669,7 @@ export type GymUpdateWithoutFeesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutGymNestedInput
@@ -646,6 +683,7 @@ export type GymUncheckedUpdateWithoutFeesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutGymNestedInput
@@ -659,6 +697,7 @@ export type GymCreateWithoutAttendancesInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutGymInput
@@ -672,6 +711,7 @@ export type GymUncheckedCreateWithoutAttendancesInput = {
   address: string
   googleMapAddress?: string | null
   status?: $Enums.GymStatus
+  plan?: $Enums.GYMPLANS
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutGymInput
@@ -701,6 +741,7 @@ export type GymUpdateWithoutAttendancesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutGymNestedInput
@@ -714,6 +755,7 @@ export type GymUncheckedUpdateWithoutAttendancesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   googleMapAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumGymStatusFieldUpdateOperationsInput | $Enums.GymStatus
+  plan?: Prisma.EnumGYMPLANSFieldUpdateOperationsInput | $Enums.GYMPLANS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutGymNestedInput
@@ -785,6 +827,7 @@ export type GymSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   address?: boolean
   googleMapAddress?: boolean
   status?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   users?: boolean | Prisma.Gym$usersArgs<ExtArgs>
@@ -800,6 +843,7 @@ export type GymSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   address?: boolean
   googleMapAddress?: boolean
   status?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["gym"]>
@@ -810,6 +854,7 @@ export type GymSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   address?: boolean
   googleMapAddress?: boolean
   status?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["gym"]>
@@ -820,11 +865,12 @@ export type GymSelectScalar = {
   address?: boolean
   googleMapAddress?: boolean
   status?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type GymOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "googleMapAddress" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["gym"]>
+export type GymOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "googleMapAddress" | "status" | "plan" | "createdAt" | "updatedAt", ExtArgs["result"]["gym"]>
 export type GymInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Gym$usersArgs<ExtArgs>
   members?: boolean | Prisma.Gym$membersArgs<ExtArgs>
@@ -849,6 +895,7 @@ export type $GymPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     address: string
     googleMapAddress: string | null
     status: $Enums.GymStatus
+    plan: $Enums.GYMPLANS
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["gym"]>
@@ -1283,6 +1330,7 @@ export interface GymFieldRefs {
   readonly address: Prisma.FieldRef<"Gym", 'String'>
   readonly googleMapAddress: Prisma.FieldRef<"Gym", 'String'>
   readonly status: Prisma.FieldRef<"Gym", 'GymStatus'>
+  readonly plan: Prisma.FieldRef<"Gym", 'GYMPLANS'>
   readonly createdAt: Prisma.FieldRef<"Gym", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Gym", 'DateTime'>
 }

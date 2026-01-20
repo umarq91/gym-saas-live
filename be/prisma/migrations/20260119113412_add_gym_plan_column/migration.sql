@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "GYMPLANS" AS ENUM ('FREE', 'BASIC', 'PRO');
+
+-- AlterTable
+ALTER TABLE "Gym" ADD COLUMN     "plan" "GYMPLANS" NOT NULL DEFAULT 'FREE';

@@ -134,6 +134,13 @@ export type EnumGymStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumGymStatusFilter<$PrismaModel> | $Enums.GymStatus
 }
 
+export type EnumGYMPLANSFilter<$PrismaModel = never> = {
+  equals?: $Enums.GYMPLANS | Prisma.EnumGYMPLANSFieldRefInput<$PrismaModel>
+  in?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel> | $Enums.GYMPLANS
+}
+
 export type EnumGymStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.GymStatus | Prisma.EnumGymStatusFieldRefInput<$PrismaModel>
   in?: $Enums.GymStatus[] | Prisma.ListEnumGymStatusFieldRefInput<$PrismaModel>
@@ -142,6 +149,16 @@ export type EnumGymStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGymStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGymStatusFilter<$PrismaModel>
+}
+
+export type EnumGYMPLANSWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GYMPLANS | Prisma.EnumGYMPLANSFieldRefInput<$PrismaModel>
+  in?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGYMPLANSWithAggregatesFilter<$PrismaModel> | $Enums.GYMPLANS
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel>
 }
 
 export type BoolFilter<$PrismaModel = never> = {
@@ -334,6 +351,13 @@ export type NestedEnumGymStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumGymStatusFilter<$PrismaModel> | $Enums.GymStatus
 }
 
+export type NestedEnumGYMPLANSFilter<$PrismaModel = never> = {
+  equals?: $Enums.GYMPLANS | Prisma.EnumGYMPLANSFieldRefInput<$PrismaModel>
+  in?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel> | $Enums.GYMPLANS
+}
+
 export type NestedEnumGymStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.GymStatus | Prisma.EnumGymStatusFieldRefInput<$PrismaModel>
   in?: $Enums.GymStatus[] | Prisma.ListEnumGymStatusFieldRefInput<$PrismaModel>
@@ -342,6 +366,16 @@ export type NestedEnumGymStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGymStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGymStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumGYMPLANSWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GYMPLANS | Prisma.EnumGYMPLANSFieldRefInput<$PrismaModel>
+  in?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GYMPLANS[] | Prisma.ListEnumGYMPLANSFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGYMPLANSWithAggregatesFilter<$PrismaModel> | $Enums.GYMPLANS
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGYMPLANSFilter<$PrismaModel>
 }
 
 export type NestedBoolFilter<$PrismaModel = never> = {

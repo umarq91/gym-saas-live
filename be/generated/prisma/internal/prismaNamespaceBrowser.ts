@@ -95,6 +95,7 @@ export const GymScalarFieldEnum = {
   address: 'address',
   googleMapAddress: 'googleMapAddress',
   status: 'status',
+  plan: 'plan',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { addStaff, createGym } from "../controllers/gym.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { authorizeRoles } from "../middlewares/rbac-middleware";
+import { checkStaffLimit } from "../middlewares/staff-limit.middleware";
 
 export const gymRoutes = Router();
 
