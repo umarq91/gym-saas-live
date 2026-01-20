@@ -1,67 +1,72 @@
-import { GYM_PLAN_KEY, GYM_PLANS } from "../constants";
 import { PrismaClient, UserRole } from "../generated/prisma/client";
+import { GYM_PLANS, GYM_PLAN_KEY } from "../constants";
 
 export class PlanLimitService {
   constructor(private prisma: PrismaClient) {}
 
+  private async getGymPlan(gymId: string) {
+    const gym = await this.prisma.gym.findUnique({
+      where: { id: gymId },
+      select: { id: true, plan: true },
+    });
+
+    if (!gym) {
+      throw new Error("Gym not found");
+    }
+
+    return {
+      gymId: gym.id,
+      planKey: gym.plan as GYM_PLAN_KEY,
+      plan: GYM_PLANS[gym.plan as GYM_PLAN_KEY],
+    };
+  }
+
   async canAddMembers(
     gymId: string,
   ): Promise<{ canAdd: boolean; reason?: string }> {
-    const gym = await this.prisma.gym.findFirst({
-      where: {
-        id: gymId,
-      },
-    });
+    const { plan, planKey } = await this.getGymPlan(gymId);
 
-    if (!gym) {
-      return { canAdd: false, reason: "Gym not found!" };
-    }
-    
-    const plan = GYM_PLANS[gym?.plan as GYM_PLAN_KEY];
-    // get count of members associated with gym
     const membersCount = await this.prisma.member.count({
-      where: {
-        gymId: gym?.id,
-      },
+      where: { gymId },
     });
 
-    // compare with plans
     if (membersCount >= plan.maxMembers) {
       return {
         canAdd: false,
-        reason: "Plan limit reached. You cannot add more members",
+        reason: `Member limit reached for ${planKey} plan`,
       };
     }
+
     return { canAdd: true };
   }
 
-  async checkStaffLimit(
+  async canAddStaff(
     gymId: string,
   ): Promise<{ canAdd: boolean; reason?: string }> {
-    const gym = await this.prisma.gym.findFirst({
+    const { plan, planKey } = await this.getGymPlan(gymId);
+
+    const staffCount = await this.prisma.user.count({
       where: {
-        id: gymId,
-      },
-      include: {
-        users: {
-          where: { role: UserRole.STAFF },
-        },
+        gymId,
+        role: UserRole.STAFF,
       },
     });
 
-    if (!gym) {
-      return { canAdd: false, reason: "Gym not found!" };
-    }
-    const plan = GYM_PLANS[gym?.plan as GYM_PLAN_KEY];
-    const currentStaffNumber = await gym.users.length;
-
-    if (currentStaffNumber >= plan.maxStaff) {
+    if (staffCount >= plan.maxStaff) {
       return {
         canAdd: false,
-        reason: `Plan Limit Reached. Maximum ${plan.maxStaff} staff members are allowed for ${gym.plan} plan`,
+        reason: `Staff limit reached for ${planKey} plan`,
       };
     }
 
     return { canAdd: true };
+  }
+
+  async hasFeature(
+    gymId: string,
+    feature: keyof (typeof GYM_PLANS)[GYM_PLAN_KEY],
+  ): Promise<boolean> {
+    const { plan } = await this.getGymPlan(gymId);
+    return Boolean(plan[feature]);
   }
 }

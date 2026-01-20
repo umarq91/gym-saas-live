@@ -17,7 +17,7 @@ export const checkStaffLimit = async (
     });
   }
 
-  const canAdd = await planService.checkStaffLimit(gymId);
+  const canAdd = await planService.canAddStaff(gymId);
 
   if (!canAdd.canAdd) {
     return res.status(403).json({
