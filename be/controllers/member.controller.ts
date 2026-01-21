@@ -1,7 +1,12 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
+import { sendResponse, PaginationMetadata } from "../utils/api-response-handler";
 
-export const createMember = async (req: Request, res: Response) => {
+export const createMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { name, phone, email } = req.body;
 
@@ -16,16 +21,21 @@ export const createMember = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({ success: true, data: member });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Somehting went wrong adding a member",
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Member created successfully",
+      data: member,
     });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getMembers = async (req: Request, res: Response) => {
+export const getMembers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
@@ -82,8 +92,9 @@ export const getMembers = async (req: Request, res: Response) => {
       }),
     ]);
 
-    res.status(200).json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Members fetched successfully",
       data: members,
       pagination: {
         page,
@@ -93,9 +104,6 @@ export const getMembers = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch members",
-    });
+    next(error);
   }
 };

@@ -1,79 +1,74 @@
-
-
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { prisma } from "../db";
+import { ApiError } from "../utils/api-error";
+import { sendResponse } from "../utils/api-response-handler";
 
-
-export const createGymOwner = async(req:Request,res:Response)=>{
+export const createGymOwner = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const {name,username,email,password,gymId} =  req.body;
+    const { name, username, email, password, gymId } = req.body;
 
-    const existingUser = await prisma.user.findUnique({where:{email}})
+    const existingUser = await prisma.user.findUnique({ where: { email } });
 
-    if(existingUser){
-      return res.status(400).json({
-        sucess:false,
-        message:"Email already exists"
-      })
+    if (existingUser) {
+      throw new ApiError("Email Already Exist", 400);
     }
 
-    if(!gymId){
-      return res.status(403).json({
-        success:false,
-        message:"Gym ID is required!"
-      })
+    if (!gymId) {
+      throw new ApiError("Gym Id is required", 400);
     }
 
-    const hashedPass = await bcrypt.hash(password,12)
+    const hashedPass = await bcrypt.hash(password, 12);
 
-   await prisma.user.create({
-      data:{
-        name,email,password:hashedPass,username,gymId,role:"OWNER"
-      }
-    })
-    
-  return res.status(201).json({
-    success:true,
-    message:"A new Gym Owner sccessfully created!"
-  })
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPass,
+        username,
+        gymId,
+        role: "OWNER",
+      },
+    });
 
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Gym Owner created successfully",
+    });
   } catch (error) {
-    console.error("ERROR",error)
-    return res.json({
-      success:false,
-      error
-    })
+    next(error);
   }
-  
+};
 
-}
-
-export const createSaasOwner = async(req:Request,res:Response)=>{
+export const createSaasOwner = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const {name,username,email,password} =  req.body;
+    const { name, username, email, password } = req.body;
 
+    const hashedPass = await bcrypt.hash(password, 12);
 
-    const hashedPass = await bcrypt.hash(password,12)
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPass,
+        username,
+        role: "SUPER__USER",
+      },
+    });
 
-   await prisma.user.create({
-      data:{
-        name,email,password:hashedPass,username,role:"SUPER__USER"
-      }
-    })
-    
-  return res.status(201).json({
-    success:true,
-    message:"A new Gym Owner sccessfully created!"
-  })
-
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Saas Owner created successfully",
+    });
   } catch (error) {
-    console.error("ERROR",error)
-    return res.json({
-      success:false,
-      error
-    })
+    next(error);
   }
-  
-
-}
+};

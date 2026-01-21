@@ -1,27 +1,27 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
+import { ApiError } from "../utils/api-error";
+import { sendResponse } from "../utils/api-response-handler";
 
 /**
  * MARK ATTENDANCE
  */
-export const addAttendance = async (req: Request, res: Response) => {
+export const addAttendance = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { memberId, date, status } = req.body;
 
     if (!memberId || !date) {
-      return res.json({
-        success: false,
-        message: "memberId and date are required",
-      });
+      throw new ApiError("memberId and date are required", 400);
     }
 
     const attendanceDate = new Date(date);
 
     if (attendanceDate > new Date()) {
-      return res.json({
-        success: false,
-        message: "Future dates are not allowed",
-      });
+      throw new ApiError("Future dates are not allowed", 400);
     }
 
     const gymMember = await prisma.member.findFirst({
@@ -32,10 +32,7 @@ export const addAttendance = async (req: Request, res: Response) => {
     });
 
     if (!gymMember) {
-      return res.json({
-        success: false,
-        message: "Gym member not found",
-      });
+      throw new ApiError("Gym member not found", 404);
     }
 
     // Prevent duplicate attendance
@@ -48,10 +45,7 @@ export const addAttendance = async (req: Request, res: Response) => {
     });
 
     if (alreadyMarked) {
-      return res.json({
-        success: false,
-        message: "Attendance already marked for this date",
-      });
+      throw new ApiError("Attendance already marked for this date", 400);
     }
 
     await prisma.attendance.create({
@@ -64,16 +58,12 @@ export const addAttendance = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 201,
       message: "Attendance marked successfully",
     });
   } catch (error) {
-    console.error("ADD ATTENDANCE ERROR:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
+    next(error);
   }
 };
 
@@ -81,7 +71,11 @@ export const addAttendance = async (req: Request, res: Response) => {
  * GET MEMBER ATTENDANCE
  * /attendance/member/:memberId?from=2026-01-01&to=2026-01-31
  */
-export const getMemberAttendance = async (req: Request, res: Response) => {
+export const getMemberAttendance = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { memberId } = req.params;
     const { from, to } = req.query;
@@ -95,10 +89,7 @@ export const getMemberAttendance = async (req: Request, res: Response) => {
     });
 
     if (!gymMember) {
-      return res.json({
-        success: false,
-        message: "Gym member not found",
-      });
+      throw new ApiError("Gym member not found", 404);
     }
 
     const attendance = await prisma.attendance.findMany({
@@ -115,23 +106,25 @@ export const getMemberAttendance = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member attendance fetched successfully",
       data: attendance,
     });
   } catch (error) {
-    console.error("GET MEMBER ATTENDANCE ERROR:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
+    next(error);
   }
 };
+
 /**
  * GET GYM ATTENDANCE BY DATE
  * /attendance?date=2026-01-19
  */
-export const getGymAttendanceByDate = async (req: Request, res: Response) => {
+export const getGymAttendanceByDate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { date } = req.query;
 
@@ -161,31 +154,30 @@ export const getGymAttendanceByDate = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Gym attendance fetched successfully",
       data,
     });
   } catch (error) {
-    console.error("GET GYM ATTENDANCE ERROR:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
+    next(error);
   }
 };
+
 /**
  * UPDATE ATTENDANCE
  */
-export const updateAttendance = async (req: Request, res: Response) => {
+export const updateAttendance = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { attendanceId } = req.params;
     const { status } = req.body;
 
     if (!status) {
-      return res.json({
-        success: false,
-        message: "status is required",
-      });
+      throw new ApiError("status is required", 400);
     }
 
     const attendance = await prisma.attendance.findFirst({
@@ -196,10 +188,7 @@ export const updateAttendance = async (req: Request, res: Response) => {
     });
 
     if (!attendance) {
-      return res.json({
-        success: false,
-        message: "Attendance record not found",
-      });
+      throw new ApiError("Attendance record not found", 404);
     }
 
     await prisma.attendance.update({
@@ -207,15 +196,11 @@ export const updateAttendance = async (req: Request, res: Response) => {
       data: { status },
     });
 
-    return res.json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 200,
       message: "Attendance updated successfully",
     });
   } catch (error) {
-    console.error("UPDATE ATTENDANCE ERROR:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
+    next(error);
   }
 };

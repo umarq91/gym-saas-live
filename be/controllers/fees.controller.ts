@@ -1,7 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
+import { ApiError } from "../utils/api-error";
+import { sendResponse, PaginationMetadata } from "../utils/api-response-handler";
 
-export async function feesPaid(req: Request, res: Response) {
+export async function feesPaid(req: Request, res: Response, next: NextFunction) {
   try {
     const {
       memberId,
@@ -13,17 +15,11 @@ export async function feesPaid(req: Request, res: Response) {
     } = req.body;
 
     if (!memberId) {
-      return res.status(400).json({
-        success: false,
-        message: "Member ID is required",
-      });
+      throw new ApiError("Member ID is required", 400);
     }
 
     if (originalAmount < 0 || amountPaid < 0 || amountPaid > originalAmount) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid fee amounts",
-      });
+      throw new ApiError("Invalid fee amounts", 400);
     }
 
     // ensure member belongs to same gym
@@ -35,10 +31,7 @@ export async function feesPaid(req: Request, res: Response) {
     });
 
     if (!member) {
-      return res.status(404).json({
-        success: false,
-        message: "Member not found in this gym",
-      });
+      throw new ApiError("Member not found in this gym", 404);
     }
 
     const fees = await prisma.fees.create({
@@ -54,28 +47,26 @@ export async function feesPaid(req: Request, res: Response) {
       },
     });
 
-    return res.status(201).json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 201,
       message: `Fees paid for member ${memberId}`,
       data: fees,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to record fees",
-    });
+    next(error);
   }
 }
 
-export async function getMemberFees(req: Request, res: Response) {
+export async function getMemberFees(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { memberId } = req.params;
 
     if (!memberId) {
-      return res.status(400).json({
-        success: false,
-        message: "Member ID is required",
-      });
+      throw new ApiError("Member ID is required", 400);
     }
 
     const fees = await prisma.fees.findMany({
@@ -97,19 +88,21 @@ export async function getMemberFees(req: Request, res: Response) {
       },
     });
 
-    return res.json({
-      success: true,
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member fees fetched successfully",
       data: fees,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to fetch member fees",
-    });
+    next(error);
   }
 }
 
-export async function getGymFeesSummary(req: Request, res: Response) {
+export async function getGymFeesSummary(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
@@ -143,16 +136,18 @@ export async function getGymFeesSummary(req: Request, res: Response) {
       },
     });
 
-    return res.json({
-      success: true,
-      page,
-      limit,
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Gym fees summary fetched successfully",
       data: feesSummary,
+      pagination: {
+        page,
+        limit,
+        total: feesSummary.length,
+        pages: Math.ceil(feesSummary.length / limit),
+      },
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to fetch gym fees summary",
-    });
+    next(error);
   }
 }
