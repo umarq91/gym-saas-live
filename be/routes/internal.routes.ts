@@ -20,7 +20,6 @@ internalRoutes.post(
 internalRoutes.post("/saas-owner", createSaasOwner);
 
 internalRoutes.get("/health", (req: Request, res: Response) => {
-  throw new ApiError("Something is not wright", 404);
   sendResponse(res, {
     statusCode: 200,
     data: { running: "Yes Everything is working!" },

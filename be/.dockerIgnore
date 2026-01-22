@@ -1,0 +1,18 @@
+.env
+# Ignore common development and version control files
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Ignore environment files and logs
+.env
+*.log
+
+# Ignore language-specific dependencies and build artifacts
+**/node_modules
+**/dist
+__pycache__
+*.pyc
+.coverage
