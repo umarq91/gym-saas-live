@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
-import { sendResponse, PaginationMetadata } from "../utils/api-response-handler";
+import {
+  sendResponse,
+  PaginationMetadata,
+} from "../utils/api-response-handler";
 
 export const createMember = async (
   req: Request,
@@ -66,16 +69,6 @@ export const getMembers = async (
         take: limit,
         orderBy: {
           createdAt: "desc",
-        },
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          email: true,
-          joinDate: true,
-          isActive: true,
-          createdAt: true,
-          updatedAt: true,
         },
       }),
       prisma.member.count({

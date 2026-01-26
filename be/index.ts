@@ -10,13 +10,20 @@ import { memberRoutes } from "./routes/member.routes";
 import { config } from "./config/envs";
 import { globalErrorHandler } from "./middlewares/error-middleware";
 import { client } from "./utils/redis";
-
+import cors from "cors";
 export const app = express();
 
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+
 app.listen(config.port, () => {
-  client.connect();
+  // client.connect();
   console.log("Redis connected ");
   console.log("Server started running on port " + config.port);
 });
