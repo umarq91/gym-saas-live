@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { DataTable, Column } from "@/components/common/data-table";
 import { MemberForm } from "@/components/members/member-form";
@@ -21,22 +22,18 @@ import { useMembersStore } from "@/lib/store/members-store";
 import { useApiCreate, useApiUpdate, useApiDelete } from "@/hooks/useApi";
 import { Member, CreateMemberInput, UpdateMemberInput } from "@/lib/types";
 import { Edit2, Trash2, Plus, Search } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "./loading";
 
 export default function MembersPage() {
-  const [formOpen, setFormOpen] = useState(false);
+  const router = useRouter();
   const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const store = useMembersStore();
 
-  const createMutation = useApiCreate<Member, CreateMemberInput>({
-    onSuccess: () => setFormOpen(false),
-  });
   const updateMutation = useApiUpdate<Member, UpdateMemberInput>({
     onSuccess: () => setEditingMember(null),
   });
@@ -55,7 +52,7 @@ export default function MembersPage() {
     store.searchMembers(query);
   };
 
-  // Handle form submission
+  // Handle form submission for editing
   const handleFormSubmit = async (
     data: CreateMemberInput | UpdateMemberInput,
   ) => {
@@ -68,13 +65,8 @@ export default function MembersPage() {
         setEditingMember(null);
       }
       return success;
-    } else {
-      const success = await store.createMember(data as CreateMemberInput);
-      if (success) {
-        setFormOpen(false);
-      }
-      return success;
     }
+    return false;
   };
 
   // Handle delete
@@ -109,12 +101,39 @@ export default function MembersPage() {
     {
       key: "joinDate",
       label: "Join Date",
-      render: (value) =>
-        formatDistanceToNow(new Date(value), { addSuffix: true }),
+      render: (value) => {
+        const date = new Date(value);
+        return date.toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      },
     },
     {
-      key: "is_Active",
-      label: "Status",
+      key: "fees",
+      label: "Last fee paid at",
+      render: (value) => {
+
+        if(value.length>0){
+           const date = new Date(value[0]?.paidAt);
+
+        return (
+          date.toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }) || "NOT PAID"
+        );
+        }else{
+          return "No Record"
+        }
+
+      },
+    },
+    {
+      key: "isActive",
+      label: "Active Status",
       render: (value) => (
         <Badge
           className={
@@ -123,7 +142,7 @@ export default function MembersPage() {
               : "bg-destructive/20 text-destructive"
           }
         >
-          {value}
+          {value == true ? "Yes" : "No"}
         </Badge>
       ),
     },
@@ -154,8 +173,6 @@ export default function MembersPage() {
     },
   ];
 
-  console.log("Filterd members", store);
-
   return (
     <Suspense fallback={<Loading />}>
       <DashboardLayout>
@@ -180,10 +197,7 @@ export default function MembersPage() {
               />
             </div>
             <Button
-              onClick={() => {
-                setEditingMember(null);
-                setFormOpen(true);
-              }}
+              onClick={() => router.push("/members/new")}
               className="bg-primary hover:bg-primary-dark text-white gap-2"
             >
               <Plus className="w-4 h-4" />
@@ -208,17 +222,18 @@ export default function MembersPage() {
           </div>
         </Card>
 
-        {/* Member Form Modal */}
-        <MemberForm
-          open={formOpen || editingMember !== null}
-          onOpenChange={(open) => {
-            setFormOpen(open);
-            if (!open) setEditingMember(null);
-          }}
-          member={editingMember || undefined}
-          onSubmit={handleFormSubmit}
-          isLoading={store.isLoading}
-        />
+        {/* Member Form Modal - Edit Only */}
+        {editingMember && (
+          <MemberForm
+            open={editingMember !== null}
+            onOpenChange={(open) => {
+              if (!open) setEditingMember(null);
+            }}
+            member={editingMember}
+            onSubmit={handleFormSubmit}
+            isLoading={store.isLoading}
+          />
+        )}
 
         {/* Delete Confirmation Dialog */}
         <AlertDialog

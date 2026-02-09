@@ -9,7 +9,6 @@ import { attendanceRoutes } from "./routes/attendance.routes";
 import { memberRoutes } from "./routes/member.routes";
 import { config } from "./config/envs";
 import { globalErrorHandler } from "./middlewares/error-middleware";
-import { client } from "./utils/redis";
 import cors from "cors";
 export const app = express();
 

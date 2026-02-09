@@ -22,7 +22,7 @@ const memberSchema = z.object({
   email: z.string().email('Invalid email'),
   phone: z.string().min(10, 'Invalid phone number'),
   membershipType: z.string().optional(),
-  emergencyContact: z.string().optional(),
+  emergency_contact: z.string().optional(),
   notes: z.string().optional(),
 });
 
@@ -56,7 +56,7 @@ export function MemberForm({
           email: member.email,
           phone: member.phone,
           membershipType: member.membershipType,
-          emergencyContact: member.emergencyContact,
+          emergency_contact: member.emergency_contact,
           notes: member.notes,
         }
       : undefined,
@@ -153,11 +153,11 @@ export function MemberForm({
 
           {/* Emergency Contact */}
           <div className="space-y-2">
-            <Label htmlFor="emergencyContact">Emergency Contact</Label>
+            <Label htmlFor="emergency_contact">Emergency Contact</Label>
             <Input
-              id="emergencyContact"
+              id="emergency_contact"
               placeholder="Contact name"
-              {...register('emergencyContact')}
+              {...register('emergency_contact')}
               className="bg-surface border-border text-text"
               disabled={isLoading}
             />

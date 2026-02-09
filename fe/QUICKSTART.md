@@ -176,7 +176,7 @@ The API should support these tables:
 - status (ACTIVE/INACTIVE)
 - joinDate (date)
 - membershipType (string)
-- emergencyContact (string)
+- emergency_contact (string)
 - notes (text)
 ```
 

@@ -11,11 +11,7 @@ interface AuthGuardProps {
 
 export function AuthGuard({ children, allowedRoles }: AuthGuardProps) {
   const router = useRouter();
-  const { isAuthenticated, user, loadAuthFromStorage } = useAuthStore();
-
-  useEffect(() => {
-    loadAuthFromStorage();
-  }, [loadAuthFromStorage]);
+  const { isAuthenticated, user } = useAuthStore();
 
   useEffect(() => {
     if (!isAuthenticated) {

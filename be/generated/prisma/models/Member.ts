@@ -31,6 +31,8 @@ export type MemberMinAggregateOutputType = {
   email: string | null
   joinDate: Date | null
   isActive: boolean | null
+  notes: string | null
+  emergency_contact: string | null
   gymId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +45,8 @@ export type MemberMaxAggregateOutputType = {
   email: string | null
   joinDate: Date | null
   isActive: boolean | null
+  notes: string | null
+  emergency_contact: string | null
   gymId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +59,8 @@ export type MemberCountAggregateOutputType = {
   email: number
   joinDate: number
   isActive: number
+  notes: number
+  emergency_contact: number
   gymId: number
   createdAt: number
   updatedAt: number
@@ -69,6 +75,8 @@ export type MemberMinAggregateInputType = {
   email?: true
   joinDate?: true
   isActive?: true
+  notes?: true
+  emergency_contact?: true
   gymId?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +89,8 @@ export type MemberMaxAggregateInputType = {
   email?: true
   joinDate?: true
   isActive?: true
+  notes?: true
+  emergency_contact?: true
   gymId?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +103,8 @@ export type MemberCountAggregateInputType = {
   email?: true
   joinDate?: true
   isActive?: true
+  notes?: true
+  emergency_contact?: true
   gymId?: true
   createdAt?: true
   updatedAt?: true
@@ -178,6 +190,8 @@ export type MemberGroupByOutputType = {
   email: string | null
   joinDate: Date
   isActive: boolean
+  notes: string | null
+  emergency_contact: string | null
   gymId: string
   createdAt: Date
   updatedAt: Date
@@ -211,6 +225,8 @@ export type MemberWhereInput = {
   email?: Prisma.StringNullableFilter<"Member"> | string | null
   joinDate?: Prisma.DateTimeFilter<"Member"> | Date | string
   isActive?: Prisma.BoolFilter<"Member"> | boolean
+  notes?: Prisma.StringNullableFilter<"Member"> | string | null
+  emergency_contact?: Prisma.StringNullableFilter<"Member"> | string | null
   gymId?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
@@ -226,6 +242,8 @@ export type MemberOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  emergency_contact?: Prisma.SortOrderInput | Prisma.SortOrder
   gymId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -244,6 +262,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringNullableFilter<"Member"> | string | null
   joinDate?: Prisma.DateTimeFilter<"Member"> | Date | string
   isActive?: Prisma.BoolFilter<"Member"> | boolean
+  notes?: Prisma.StringNullableFilter<"Member"> | string | null
+  emergency_contact?: Prisma.StringNullableFilter<"Member"> | string | null
   gymId?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
@@ -259,6 +279,8 @@ export type MemberOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  emergency_contact?: Prisma.SortOrderInput | Prisma.SortOrder
   gymId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -277,6 +299,8 @@ export type MemberScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null
   joinDate?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Member"> | boolean
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null
+  emergency_contact?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null
   gymId?: Prisma.StringWithAggregatesFilter<"Member"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
@@ -289,6 +313,8 @@ export type MemberCreateInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   gym: Prisma.GymCreateNestedOneWithoutMembersInput
@@ -303,6 +329,8 @@ export type MemberUncheckedCreateInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -317,6 +345,8 @@ export type MemberUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
@@ -331,6 +361,8 @@ export type MemberUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -345,6 +377,8 @@ export type MemberCreateManyInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -357,6 +391,8 @@ export type MemberUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -368,6 +404,8 @@ export type MemberUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -390,6 +428,8 @@ export type MemberCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  emergency_contact?: Prisma.SortOrder
   gymId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -402,6 +442,8 @@ export type MemberMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  emergency_contact?: Prisma.SortOrder
   gymId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -414,6 +456,8 @@ export type MemberMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  emergency_contact?: Prisma.SortOrder
   gymId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -505,6 +549,8 @@ export type MemberCreateWithoutGymInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   fees?: Prisma.FeesCreateNestedManyWithoutMemberInput
@@ -518,6 +564,8 @@ export type MemberUncheckedCreateWithoutGymInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   fees?: Prisma.FeesUncheckedCreateNestedManyWithoutMemberInput
@@ -560,6 +608,8 @@ export type MemberScalarWhereInput = {
   email?: Prisma.StringNullableFilter<"Member"> | string | null
   joinDate?: Prisma.DateTimeFilter<"Member"> | Date | string
   isActive?: Prisma.BoolFilter<"Member"> | boolean
+  notes?: Prisma.StringNullableFilter<"Member"> | string | null
+  emergency_contact?: Prisma.StringNullableFilter<"Member"> | string | null
   gymId?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
@@ -572,6 +622,8 @@ export type MemberCreateWithoutFeesInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   gym: Prisma.GymCreateNestedOneWithoutMembersInput
@@ -585,6 +637,8 @@ export type MemberUncheckedCreateWithoutFeesInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -614,6 +668,8 @@ export type MemberUpdateWithoutFeesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
@@ -627,6 +683,8 @@ export type MemberUncheckedUpdateWithoutFeesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -640,6 +698,8 @@ export type MemberCreateWithoutAttendancesInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   gym: Prisma.GymCreateNestedOneWithoutMembersInput
@@ -653,6 +713,8 @@ export type MemberUncheckedCreateWithoutAttendancesInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   gymId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -682,6 +744,8 @@ export type MemberUpdateWithoutAttendancesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gym?: Prisma.GymUpdateOneRequiredWithoutMembersNestedInput
@@ -695,6 +759,8 @@ export type MemberUncheckedUpdateWithoutAttendancesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gymId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -708,6 +774,8 @@ export type MemberCreateManyGymInput = {
   email?: string | null
   joinDate?: Date | string
   isActive?: boolean
+  notes?: string | null
+  emergency_contact?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -719,6 +787,8 @@ export type MemberUpdateWithoutGymInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fees?: Prisma.FeesUpdateManyWithoutMemberNestedInput
@@ -732,6 +802,8 @@ export type MemberUncheckedUpdateWithoutGymInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fees?: Prisma.FeesUncheckedUpdateManyWithoutMemberNestedInput
@@ -745,6 +817,8 @@ export type MemberUncheckedUpdateManyWithoutGymInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergency_contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -796,6 +870,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   email?: boolean
   joinDate?: boolean
   isActive?: boolean
+  notes?: boolean
+  emergency_contact?: boolean
   gymId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -812,6 +888,8 @@ export type MemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   email?: boolean
   joinDate?: boolean
   isActive?: boolean
+  notes?: boolean
+  emergency_contact?: boolean
   gymId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -825,6 +903,8 @@ export type MemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   email?: boolean
   joinDate?: boolean
   isActive?: boolean
+  notes?: boolean
+  emergency_contact?: boolean
   gymId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -838,12 +918,14 @@ export type MemberSelectScalar = {
   email?: boolean
   joinDate?: boolean
   isActive?: boolean
+  notes?: boolean
+  emergency_contact?: boolean
   gymId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "email" | "joinDate" | "isActive" | "gymId" | "createdAt" | "updatedAt", ExtArgs["result"]["member"]>
+export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "email" | "joinDate" | "isActive" | "notes" | "emergency_contact" | "gymId" | "createdAt" | "updatedAt", ExtArgs["result"]["member"]>
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gym?: boolean | Prisma.GymDefaultArgs<ExtArgs>
   fees?: boolean | Prisma.Member$feesArgs<ExtArgs>
@@ -871,6 +953,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     email: string | null
     joinDate: Date
     isActive: boolean
+    notes: string | null
+    emergency_contact: string | null
     gymId: string
     createdAt: Date
     updatedAt: Date
@@ -1306,6 +1390,8 @@ export interface MemberFieldRefs {
   readonly email: Prisma.FieldRef<"Member", 'String'>
   readonly joinDate: Prisma.FieldRef<"Member", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"Member", 'Boolean'>
+  readonly notes: Prisma.FieldRef<"Member", 'String'>
+  readonly emergency_contact: Prisma.FieldRef<"Member", 'String'>
   readonly gymId: Prisma.FieldRef<"Member", 'String'>
   readonly createdAt: Prisma.FieldRef<"Member", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Member", 'DateTime'>

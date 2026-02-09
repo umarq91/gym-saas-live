@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
-import {
-  sendResponse,
-  PaginationMetadata,
-} from "../utils/api-response-handler";
+import { sendResponse } from "../utils/api-response-handler";
 
 export const createMember = async (
   req: Request,
@@ -11,7 +8,7 @@ export const createMember = async (
   next: NextFunction,
 ) => {
   try {
-    const { name, phone, email } = req.body;
+    const { name, phone, email, notes, emergency_contact } = req.body;
 
     // adding a member
     const member = await prisma.member.create({
@@ -21,6 +18,8 @@ export const createMember = async (
         email,
         gymId: req.user!.gymId!,
         isActive: true,
+        notes,
+        emergency_contact: emergency_contact,
       },
     });
 
@@ -67,6 +66,17 @@ export const getMembers = async (
         where: whereClause,
         skip,
         take: limit,
+        include: {
+          fees: {
+            take: 1,
+            select: {
+              paidAt: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -95,6 +105,114 @@ export const getMembers = async (
         total,
         pages: Math.ceil(total / limit),
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const memberInfo = await prisma.member.findFirst({
+      where: {
+        id,
+        gymId: req.user.gymId,
+      },
+    });
+
+    sendResponse(res, {
+      data: memberInfo,
+      statusCode: 200,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+
+    const { name, phone, email, notes, emergency_contact, isActive } = req.body;
+
+    // Ensure member belongs to the same gym
+    const member = await prisma.member.findFirst({
+      where: {
+        id,
+        gymId: req.user!.gymId!,
+      },
+    });
+
+    if (!member) {
+      return sendResponse(res, {
+        statusCode: 404,
+        message: "Member not found",
+      });
+    }
+
+    const updatedMember = await prisma.member.update({
+      where: { id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(phone !== undefined && { phone }),
+        ...(email !== undefined && { email }),
+        ...(notes !== undefined && { notes }),
+        ...(emergency_contact !== undefined && {
+          emergency_contact: emergency_contact,
+        }),
+        ...(isActive !== undefined && { isActive }),
+      },
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member updated successfully",
+      data: updatedMember,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+
+    // Check ownership (gym scope)
+    const member = await prisma.member.findFirst({
+      where: {
+        id,
+        gymId: req.user!.gymId!,
+      },
+    });
+
+    if (!member) {
+      return sendResponse(res, {
+        statusCode: 404,
+        message: "Member not found",
+      });
+    }
+
+    await prisma.member.delete({
+      where: { id },
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member deleted successfully",
     });
   } catch (error) {
     next(error);

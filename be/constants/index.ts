@@ -3,7 +3,7 @@ import { GYMPLANS } from "../generated/prisma/enums";
 export const GYM_PLANS = {
   FREE: {
     attendance: true,
-    maxMembers: 4,
+    maxMembers: 50,
     maxStaff: 11,
     reports: false,
   },
@@ -15,7 +15,7 @@ export const GYM_PLANS = {
   },
   PRO: {
     attendance: true,
-    maxMembers: 300, 
+    maxMembers: 300,
     maxStaff: Infinity,
     reports: true,
   },

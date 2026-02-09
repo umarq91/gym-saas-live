@@ -7,7 +7,7 @@ export interface Member {
   joinDate: string;
   status: 'ACTIVE' | 'INACTIVE';
   membershipType?: string;
-  emergencyContact?: string;
+  emergency_contact?: string;
   notes?: string;
   createdAt: string;
   updatedAt: string;
@@ -18,7 +18,7 @@ export interface CreateMemberInput {
   email: string;
   phone: string;
   membershipType?: string;
-  emergencyContact?: string;
+  emergency_contact?: string;
   notes?: string;
 }
 
@@ -28,7 +28,7 @@ export interface UpdateMemberInput {
   phone?: string;
   status?: 'ACTIVE' | 'INACTIVE';
   membershipType?: string;
-  emergencyContact?: string;
+  emergency_contact?: string;
   notes?: string;
 }
 

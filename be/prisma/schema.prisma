@@ -73,6 +73,9 @@ model Member {
   joinDate DateTime @default(now())
   isActive Boolean  @default(true)
 
+  notes             String?
+  emergency_contact String?
+
   gymId String
   gym   Gym    @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
@@ -103,6 +106,8 @@ model Fees {
   takenById String
   takenBy   User   @relation("FeesTakenBy", fields: [takenById], references: [id])
 
+
+  paidAt DateTime @default(now())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -853,6 +853,8 @@ export const MemberScalarFieldEnum = {
   email: 'email',
   joinDate: 'joinDate',
   isActive: 'isActive',
+  notes: 'notes',
+  emergency_contact: 'emergency_contact',
   gymId: 'gymId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -871,6 +873,7 @@ export const FeesScalarFieldEnum = {
   gymId: 'gymId',
   type: 'type',
   takenById: 'takenById',
+  paidAt: 'paidAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

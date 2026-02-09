@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
+import { useAuthStore } from './store/auth-store';
 
 // API Response Types
 export interface ApiResponse<T = any> {
@@ -48,9 +49,10 @@ const createApiClient = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        // Clear token and redirect to login
+        // Clear token from both localStorage and Zustand store
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
+        useAuthStore.getState().logout();
         window.location.href = '/login';
       }
       return Promise.reject(error);
