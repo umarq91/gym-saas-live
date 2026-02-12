@@ -10,6 +10,7 @@ import { memberRoutes } from "./routes/member.routes";
 import { config } from "./config/envs";
 import { globalErrorHandler } from "./middlewares/error-middleware";
 import cors from "cors";
+import { connectRedis } from "./utils/redis";
 export const app = express();
 
 app.use(express.json());
@@ -21,9 +22,8 @@ app.use(
   }),
 );
 
-app.listen(config.port, () => {
-  // client.connect();
-  console.log("Redis connected ");
+app.listen(config.port, async () => {
+  await connectRedis();
   console.log("Server started running on port " + config.port);
 });
 

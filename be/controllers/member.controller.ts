@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
 import { sendResponse } from "../utils/api-response-handler";
+import { client as redis, invalidateMemberCache } from "../utils/redis";
 
 export const createMember = async (
   req: Request,
@@ -23,6 +24,9 @@ export const createMember = async (
       },
     });
 
+    // Invalidate member cache for this gym
+    await invalidateMemberCache(req.user!.gymId!);
+
     return sendResponse(res, {
       statusCode: 201,
       message: "Member created successfully",
@@ -44,6 +48,31 @@ export const getMembers = async (
     const skip = (page - 1) * limit;
     const search = (req.query.search as string) || "";
 
+    // Check cache
+    const redisKey = `gymId:${req.user?.gymId}:members:page:${page}:limit:${limit}:search:${search}`;
+
+    try {
+      const cachedMembers = await redis.get(redisKey);
+      if (cachedMembers) {
+        const data = JSON.parse(cachedMembers);
+        const { page, limit, total } = data.pagination;
+
+        return sendResponse(res, {
+          statusCode: 200,
+          message: "Members fetched successfully (cached)",
+          data: data.members,
+          pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit),
+          },
+        });
+      }
+    } catch (redisError) {
+      console.error("Redis get error:", redisError);
+      // Continue to database query if Redis fails
+    }
     // Build where clause for searching
     const whereClause = {
       gymId: req.user!.gymId!,
@@ -95,6 +124,23 @@ export const getMembers = async (
       }),
     ]);
 
+    // Store in cache with error handling
+    try {
+      const cachedDataParsing = {
+        members: members,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit),
+        },
+      };
+      await redis.set(redisKey, JSON.stringify(cachedDataParsing));
+      await redis.expire(redisKey, 600); // 10 minutes
+    } catch (redisError) {
+      console.error("Redis set error:", redisError);
+      // Continue without caching if Redis fails
+    }
     return sendResponse(res, {
       statusCode: 200,
       message: "Members fetched successfully",
@@ -173,6 +219,9 @@ export const updateMember = async (
       },
     });
 
+    // Invalidate member cache for this gym
+    await invalidateMemberCache(req.user!.gymId!);
+
     return sendResponse(res, {
       statusCode: 200,
       message: "Member updated successfully",
@@ -209,6 +258,9 @@ export const deleteMember = async (
     await prisma.member.delete({
       where: { id },
     });
+
+    // Invalidate member cache for this gym
+    await invalidateMemberCache(req.user!.gymId!);
 
     return sendResponse(res, {
       statusCode: 200,
