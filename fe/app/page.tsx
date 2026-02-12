@@ -6,11 +6,7 @@ import { useAuthStore } from '@/lib/store/auth-store';
 
 export default function Home() {
   const router = useRouter();
-  const { isAuthenticated, loadAuthFromStorage } = useAuthStore();
-
-  useEffect(() => {
-    loadAuthFromStorage();
-  }, [loadAuthFromStorage]);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {

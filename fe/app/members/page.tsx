@@ -115,7 +115,7 @@ export default function MembersPage() {
       label: "Last fee paid at",
       render: (value) => {
 
-        if(value.length>0){
+        if(value?.length>0){
            const date = new Date(value[0]?.paidAt);
 
         return (

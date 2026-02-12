@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { apiPost, endpoints } from '@/lib/api-client';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { apiPost, apiGet, endpoints } from '@/lib/api-client';
 
 export type UserRole = 'SUPER_USER' | 'OWNER' | 'STAFF';
 
@@ -18,6 +19,7 @@ export interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isHydrated: boolean;
   error: string | null;
 
   // Actions
@@ -26,89 +28,124 @@ export interface AuthState {
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
   clearError: () => void;
-  loadAuthFromStorage: () => void;
+  validateToken: () => Promise<boolean>;
+  setHydrated: (hydrated: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
-
-  login: async (email: string, password: string) => {
-    set({ isLoading: true, error: null });
-    try {
-      const response = await apiPost<{ user: User; token: string }>(endpoints.auth.login, {
-        email,
-        password,
-      });
-
-      if (response.success && response.data) {
-        const { user, token } = response.data;
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
-
-        set({
-          user,
-          token,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-
-        return true;
-      } else {
-        const errorMsg = response.error || 'Login failed';
-        set({ error: errorMsg, isLoading: false });
-        return false;
-      }
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'An error occurred';
-      set({ error: errorMsg, isLoading: false });
-      return false;
-    }
-  },
-
-  logout: () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    set({
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
       user: null,
       token: null,
       isAuthenticated: false,
+      isLoading: false,
+      isHydrated: false,
       error: null,
-    });
-  },
 
-  setUser: (user) => {
-    set({ user });
-  },
+      login: async (email: string, password: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await apiPost<{ user: User; token: string }>(endpoints.auth.login, {
+            email,
+            password,
+          });
 
-  setToken: (token) => {
-    set({ token });
-  },
+          if (response.success && response.data) {
+            const { user, token } = response.data;
 
-  clearError: () => {
-    set({ error: null });
-  },
+            set({
+              user,
+              token,
+              isAuthenticated: true,
+              isLoading: false,
+            });
 
-  loadAuthFromStorage: () => {
-    const token = localStorage.getItem('authToken');
-    const userStr = localStorage.getItem('user');
+            return true;
+          } else {
+            const errorMsg = response.error || 'Login failed';
+            set({ error: errorMsg, isLoading: false });
+            return false;
+          }
+        } catch (err) {
+          const errorMsg = err instanceof Error ? err.message : 'An error occurred';
+          set({ error: errorMsg, isLoading: false });
+          return false;
+        }
+      },
 
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr);
+      logout: () => {
         set({
-          token,
-          user,
-          isAuthenticated: true,
+          user: null,
+          token: null,
+          isAuthenticated: false,
+          error: null,
         });
-      } catch (err) {
-        console.error('Failed to parse stored user:', err);
-        localStorage.removeItem('user');
-        localStorage.removeItem('authToken');
-      }
+      },
+
+      setUser: (user) => {
+        set({ user });
+      },
+
+      setToken: (token) => {
+        set({ token });
+      },
+
+      clearError: () => {
+        set({ error: null });
+      },
+
+      validateToken: async () => {
+        const { token } = get();
+
+        if (!token) {
+          set({ isAuthenticated: false, user: null });
+          return false;
+        }
+
+        try {
+          const response = await apiGet<{ user: User }>(endpoints.auth.profile);
+
+          if (response.success && response.data) {
+            set({
+              user: response.data.user,
+              isAuthenticated: true,
+            });
+            return true;
+          } else {
+            // Token is invalid
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+            });
+            return false;
+          }
+        } catch (err) {
+          // Token validation failed
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+          return false;
+        }
+      },
+
+      setHydrated: (hydrated) => {
+        set({ isHydrated: hydrated });
+      },
+    }),
+    {
+      name: 'auth-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true);
+      },
     }
-  },
-}));
+  )
+);

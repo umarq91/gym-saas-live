@@ -35,7 +35,7 @@ const createApiClient = (): AxiosInstance => {
   // Request interceptor - Add auth token
   client.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('authToken');
+      const token = useAuthStore.getState().token;
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -49,9 +49,7 @@ const createApiClient = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        // Clear token from both localStorage and Zustand store
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        // Logout and redirect to login
         useAuthStore.getState().logout();
         window.location.href = '/login';
       }
