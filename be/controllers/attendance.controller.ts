@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
 import { ApiError } from "../utils/api-error";
 import { sendResponse } from "../utils/api-response-handler";
+import { GymRequest } from "../types/auth";
 
 /**
  * MARK ATTENDANCE
@@ -12,11 +13,8 @@ export const addAttendance = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { memberId, date, status } = req.body;
-
-    if (!memberId || !date) {
-      throw new ApiError("memberId and date are required", 400);
-    }
 
     const attendanceDate = new Date(date);
 
@@ -25,23 +23,15 @@ export const addAttendance = async (
     }
 
     const gymMember = await prisma.member.findFirst({
-      where: {
-        id: memberId,
-        gymId: req.user!.gymId,
-      },
+      where: { id: memberId, gymId: user.gymId },
     });
 
     if (!gymMember) {
       throw new ApiError("Gym member not found", 404);
     }
 
-    // Prevent duplicate attendance
     const alreadyMarked = await prisma.attendance.findFirst({
-      where: {
-        memberId,
-        gymId: req.user!.gymId,
-        date: attendanceDate,
-      },
+      where: { memberId, gymId: user.gymId, date: attendanceDate },
     });
 
     if (alreadyMarked) {
@@ -51,10 +41,10 @@ export const addAttendance = async (
     await prisma.attendance.create({
       data: {
         memberId,
-        gymId: req.user!.gymId,
+        gymId: user.gymId,
         date: attendanceDate,
         status: status ?? "PRESENT",
-        markedById: req.user!.id,
+        markedById: user.id,
       },
     });
 
@@ -77,15 +67,12 @@ export const getMemberAttendance = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { memberId } = req.params;
     const { from, to } = req.query;
 
-    // Ensure member belongs to same gym
     const gymMember = await prisma.member.findFirst({
-      where: {
-        id: memberId,
-        gymId: req.user!.gymId,
-      },
+      where: { id: memberId, gymId: user.gymId },
     });
 
     if (!gymMember) {
@@ -95,15 +82,13 @@ export const getMemberAttendance = async (
     const attendance = await prisma.attendance.findMany({
       where: {
         memberId,
-        gymId: req.user!.gymId,
+        gymId: user.gymId,
         date: {
           gte: from ? new Date(from as string) : undefined,
           lte: to ? new Date(to as string) : undefined,
         },
       },
-      orderBy: {
-        date: "desc",
-      },
+      orderBy: { date: "desc" },
     });
 
     return sendResponse(res, {
@@ -126,32 +111,18 @@ export const getGymAttendanceByDate = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { date } = req.query;
 
     const attendanceDate = date ? new Date(date as string) : new Date();
 
     const data = await prisma.attendance.findMany({
-      where: {
-        gymId: req.user!.gymId,
-        date: attendanceDate,
-      },
+      where: { gymId: user.gymId, date: attendanceDate },
       include: {
-        member: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        markedBy: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+        member: { select: { id: true, name: true } },
+        markedBy: { select: { id: true, name: true } },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
 
     return sendResponse(res, {
@@ -173,18 +144,12 @@ export const updateAttendance = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { attendanceId } = req.params;
     const { status } = req.body;
 
-    if (!status) {
-      throw new ApiError("status is required", 400);
-    }
-
     const attendance = await prisma.attendance.findFirst({
-      where: {
-        id: attendanceId,
-        gymId: req.user!.gymId,
-      },
+      where: { id: attendanceId, gymId: user.gymId },
     });
 
     if (!attendance) {

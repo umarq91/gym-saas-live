@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
 import { sendResponse } from "../utils/api-response-handler";
 import { client as redis, invalidateMemberCache } from "../utils/redis";
+import { GymRequest } from "../types/auth";
 
 export const createMember = async (
   req: Request,
@@ -9,23 +10,22 @@ export const createMember = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { name, phone, email, notes, emergency_contact } = req.body;
 
-    // adding a member
     const member = await prisma.member.create({
       data: {
         name,
         phone,
         email,
-        gymId: req.user!.gymId!,
+        gymId: user.gymId,
         isActive: true,
         notes,
-        emergency_contact: emergency_contact,
+        emergency_contact,
       },
     });
 
-    // Invalidate member cache for this gym
-    await invalidateMemberCache(req.user!.gymId!);
+    await invalidateMemberCache(user.gymId);
 
     return sendResponse(res, {
       statusCode: 201,
@@ -43,20 +43,19 @@ export const getMembers = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
     const search = (req.query.search as string) || "";
 
-    // Check cache
-    const redisKey = `gymId:${req.user?.gymId}:members:page:${page}:limit:${limit}:search:${search}`;
+    const redisKey = `gymId:${user.gymId}:members:page:${page}:limit:${limit}:search:${search}`;
 
     try {
       const cachedMembers = await redis.get(redisKey);
       if (cachedMembers) {
         const data = JSON.parse(cachedMembers);
         const { page, limit, total } = data.pagination;
-
         return sendResponse(res, {
           statusCode: 200,
           message: "Members fetched successfully (cached)",
@@ -71,24 +70,18 @@ export const getMembers = async (
       }
     } catch (redisError) {
       console.error("Redis get error:", redisError);
-      // Continue to database query if Redis fails
     }
-    // Build where clause for searching
-    const whereClause = {
-      gymId: req.user!.gymId!,
-      OR: search
-        ? [
-            { name: { contains: search, mode: "insensitive" as const } },
-            { phone: { contains: search, mode: "insensitive" as const } },
-            { email: { contains: search, mode: "insensitive" as const } },
-          ]
-        : undefined,
-    };
 
-    // Remove OR clause if no search query
-    if (!search) {
-      delete whereClause.OR;
-    }
+    const whereClause = {
+      gymId: user.gymId,
+      ...(search && {
+        OR: [
+          { name: { contains: search, mode: "insensitive" as const } },
+          { phone: { contains: search, mode: "insensitive" as const } },
+          { email: { contains: search, mode: "insensitive" as const } },
+        ],
+      }),
+    };
 
     const [members, total] = await Promise.all([
       prisma.member.findMany({
@@ -98,49 +91,26 @@ export const getMembers = async (
         include: {
           fees: {
             take: 1,
-            select: {
-              paidAt: true,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
+            select: { paidAt: true },
+            orderBy: { createdAt: "desc" },
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
       }),
-      prisma.member.count({
-        where: {
-          gymId: req.user!.gymId!,
-          ...(search && {
-            OR: [
-              { name: { contains: search, mode: "insensitive" } },
-              { phone: { contains: search, mode: "insensitive" } },
-              { email: { contains: search, mode: "insensitive" } },
-            ],
-          }),
-        },
-      }),
+      prisma.member.count({ where: whereClause }),
     ]);
 
-    // Store in cache with error handling
     try {
-      const cachedDataParsing = {
-        members: members,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit),
-        },
+      const cachePayload = {
+        members,
+        pagination: { page, limit, total, pages: Math.ceil(total / limit) },
       };
-      await redis.set(redisKey, JSON.stringify(cachedDataParsing));
-      await redis.expire(redisKey, 600); // 10 minutes
+      await redis.set(redisKey, JSON.stringify(cachePayload));
+      await redis.expire(redisKey, 600);
     } catch (redisError) {
       console.error("Redis set error:", redisError);
-      // Continue without caching if Redis fails
     }
+
     return sendResponse(res, {
       statusCode: 200,
       message: "Members fetched successfully",
@@ -163,18 +133,14 @@ export const getMember = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { id } = req.params;
+
     const memberInfo = await prisma.member.findFirst({
-      where: {
-        id,
-        gymId: req.user.gymId,
-      },
+      where: { id, gymId: user.gymId },
     });
 
-    sendResponse(res, {
-      data: memberInfo,
-      statusCode: 200,
-    });
+    sendResponse(res, { data: memberInfo, statusCode: 200 });
   } catch (error) {
     next(error);
   }
@@ -186,23 +152,16 @@ export const updateMember = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { id } = req.params;
-
     const { name, phone, email, notes, emergency_contact, isActive } = req.body;
 
-    // Ensure member belongs to the same gym
     const member = await prisma.member.findFirst({
-      where: {
-        id,
-        gymId: req.user!.gymId!,
-      },
+      where: { id, gymId: user.gymId },
     });
 
     if (!member) {
-      return sendResponse(res, {
-        statusCode: 404,
-        message: "Member not found",
-      });
+      return sendResponse(res, { statusCode: 404, message: "Member not found" });
     }
 
     const updatedMember = await prisma.member.update({
@@ -212,15 +171,12 @@ export const updateMember = async (
         ...(phone !== undefined && { phone }),
         ...(email !== undefined && { email }),
         ...(notes !== undefined && { notes }),
-        ...(emergency_contact !== undefined && {
-          emergency_contact: emergency_contact,
-        }),
+        ...(emergency_contact !== undefined && { emergency_contact }),
         ...(isActive !== undefined && { isActive }),
       },
     });
 
-    // Invalidate member cache for this gym
-    await invalidateMemberCache(req.user!.gymId!);
+    await invalidateMemberCache(user.gymId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -238,29 +194,19 @@ export const deleteMember = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { id } = req.params;
 
-    // Check ownership (gym scope)
     const member = await prisma.member.findFirst({
-      where: {
-        id,
-        gymId: req.user!.gymId!,
-      },
+      where: { id, gymId: user.gymId },
     });
 
     if (!member) {
-      return sendResponse(res, {
-        statusCode: 404,
-        message: "Member not found",
-      });
+      return sendResponse(res, { statusCode: 404, message: "Member not found" });
     }
 
-    await prisma.member.delete({
-      where: { id },
-    });
-
-    // Invalidate member cache for this gym
-    await invalidateMemberCache(req.user!.gymId!);
+    await prisma.member.delete({ where: { id } });
+    await invalidateMemberCache(user.gymId);
 
     return sendResponse(res, {
       statusCode: 200,

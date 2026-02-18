@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db";
 import { ApiError } from "../utils/api-error";
-import {
-  sendResponse,
-  PaginationMetadata,
-} from "../utils/api-response-handler";
+import { sendResponse } from "../utils/api-response-handler";
+import { GymRequest } from "../types/auth";
 
 export async function feesPaid(
   req: Request,
@@ -12,29 +10,15 @@ export async function feesPaid(
   next: NextFunction,
 ) {
   try {
-    const {
-      memberId,
-      originalAmount,
-      amountPaid,
-      discountType,
-      discountApplied,
-      type,
-    } = req.body;
+    const { user } = req as GymRequest;
+    const { memberId, originalAmount, amountPaid, discountType, discountApplied, type } = req.body;
 
-    if (!memberId) {
-      throw new ApiError("Member ID is required", 400);
+    if (amountPaid > originalAmount) {
+      throw new ApiError("amountPaid cannot exceed originalAmount", 400);
     }
 
-    if (originalAmount < 0 || amountPaid < 0 || amountPaid > originalAmount) {
-      throw new ApiError("Invalid fee amounts", 400);
-    }
-
-    // ensure member belongs to same gym
     const member = await prisma.member.findFirst({
-      where: {
-        id: memberId,
-        gymId: req.user!.gymId,
-      },
+      where: { id: memberId, gymId: user.gymId },
     });
 
     if (!member) {
@@ -43,8 +27,8 @@ export async function feesPaid(
 
     const fees = await prisma.fees.create({
       data: {
-        takenById: req.user!.id,
-        gymId: req.user!.gymId,
+        takenById: user.id,
+        gymId: user.gymId,
         memberId,
         originalAmount,
         amountPaid,
@@ -70,29 +54,17 @@ export async function getMemberFees(
   next: NextFunction,
 ) {
   try {
+    const { user } = req as GymRequest;
     const { memberId } = req.params;
 
-    if (!memberId) {
-      throw new ApiError("Member ID is required", 400);
-    }
-
     const fees = await prisma.fees.findMany({
-      where: {
-        gymId: req.user!.gymId,
-        memberId,
-      },
+      where: { gymId: user.gymId, memberId },
       include: {
         takenBy: {
-          select: {
-            id: true,
-            name: true,
-            role: true,
-          },
+          select: { id: true, name: true, role: true },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
 
     return sendResponse(res, {
@@ -110,86 +82,38 @@ export async function getGymFeesSummary(
   res: Response,
   next: NextFunction,
 ) {
-  console.log("request",req);
-  
   try {
+    const { user } = req as GymRequest;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-    // we're only getting those who have paid fees
-    // const feesSummary = await prisma.fees.findMany({
-    //   where: {
-    //     gymId: req.user!.gymId,
-    //   },
-    //   skip,
-    //   take: limit,
-    //   orderBy: {
-    //     createdAt: "desc",
-    //   },
-    //   include: {
-    //     member: {
-    //       select: {
-    //         id: true,
-    //         name: true,
-    //         phone: true,
-    //       },
-    //     },
-    //     takenBy: {
-    //       select: {
-    //         id: true,
-    //         name: true,
-    //         role: true,
-    //         createdAt: true,
-    //       },
-    //     },
-    //   },
-    // });
-    // we need the members who have not paid or overdue for the last 28 days
 
     const membersData = await prisma.member.findMany({
-      where: {
-        gymId: req.user!.gymId,
-      },
+      where: { gymId: user.gymId },
       include: {
         fees: {
           select: {
             paidAt: true,
             amountPaid: true,
             takenBy: {
-              select: {
-                id: true,
-                name: true,
-                role: true,
-                createdAt: true,
-              },
+              select: { id: true, name: true, role: true, createdAt: true },
             },
           },
-          orderBy: {
-            paidAt: "desc",
-          },
+          orderBy: { paidAt: "desc" },
           take: 1,
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
 
     const now = new Date();
-    const mapped = membersData.map((member) => {
-      const lastFees = member.fees[0] ?? null;
-      let status: "PAID" | "OVERDUE";
+    const days28 = 1000 * 60 * 60 * 24 * 28;
 
-      // If not available -> overdue
-      if (!lastFees) {
-        status = "OVERDUE";
-      } else {
-        //else -> check if that's over last 28 days -> if yes -> overdue
-        const sinceLastPayment = now.getTime() - lastFees.paidAt.getTime();
-        const days_28 = 1000 * 60 * 60 * 24 * 28;
-        
-        status = sinceLastPayment > days_28 ? "OVERDUE" : "PAID";
-      }
+    const mapped = membersData.map((member) => {
+      const lastFee = member.fees[0] ?? null;
+      const status: "PAID" | "OVERDUE" =
+        !lastFee || now.getTime() - lastFee.paidAt.getTime() > days28
+          ? "OVERDUE"
+          : "PAID";
 
       return {
         memberId: member.id,
@@ -198,24 +122,19 @@ export async function getGymFeesSummary(
         email: member.email,
         joinDate: member.joinDate,
         status,
-        lastPayment: lastFees
-          ? {
-              paidAt: lastFees.paidAt,
-              paidAmount: lastFees.amountPaid,
-              takenBy: lastFees.takenBy,
-            }
+        lastPayment: lastFee
+          ? { paidAt: lastFee.paidAt, paidAmount: lastFee.amountPaid, takenBy: lastFee.takenBy }
           : null,
       };
     });
 
-    const summary = {
-      overdue: mapped.filter((m) => m.status === "OVERDUE"),
-      paid: mapped.filter((m) => m.status === "PAID"),
-    };
     return sendResponse(res, {
       statusCode: 200,
       message: "Gym fees summary fetched successfully",
-      data: summary,
+      data: {
+        overdue: mapped.filter((m) => m.status === "OVERDUE"),
+        paid: mapped.filter((m) => m.status === "PAID"),
+      },
       pagination: {
         page,
         limit,

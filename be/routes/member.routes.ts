@@ -9,10 +9,11 @@ import {
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { authorizeRoles } from "../middlewares/rbac-middleware";
 import { checkMemberLimit } from "../middlewares/member-limit.middleware";
+import { checkValidation } from "../middlewares/validation-middleware";
+import { MemberSchema, UpdateMemberSchema } from "../schemas/member.schema";
 
 export const memberRoutes = Router();
 
-// Get all members of the gym (paginated with search)
 memberRoutes.get(
   "/",
   authMiddleware,
@@ -20,16 +21,15 @@ memberRoutes.get(
   getMembers,
 );
 
-// Create new member
 memberRoutes.post(
   "/",
   authMiddleware,
   authorizeRoles("OWNER", "STAFF"),
   checkMemberLimit,
+  checkValidation(MemberSchema),
   createMember,
 );
 
-// get a single member info
 memberRoutes.get(
   "/:id",
   authMiddleware,
@@ -41,6 +41,7 @@ memberRoutes.patch(
   "/:id",
   authMiddleware,
   authorizeRoles("OWNER", "STAFF"),
+  checkValidation(UpdateMemberSchema),
   updateMember,
 );
 

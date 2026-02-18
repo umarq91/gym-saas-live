@@ -6,8 +6,7 @@ import { config } from "../config/envs";
 import { ApiError } from "../utils/api-error";
 import { sendResponse } from "../utils/api-response-handler";
 import { client } from "../utils/redis";
-
-//todo:add zod validation
+import { AuthenticatedRequest } from "../types/auth";
 
 export const login = async (
   req: Request,
@@ -62,23 +61,20 @@ export const getProfile = async (
   next: NextFunction,
 ) => {
   try {
-    const userId = req.user?.id;
-    const rediskey = `userId:${userId}`;
+    const { user } = req as AuthenticatedRequest;
+    const rediskey = `userId:${user.id}`;
+
     const cachedUser = await client.get(rediskey);
     if (cachedUser) {
-      const user = JSON.parse(cachedUser);
       return sendResponse(res, {
         statusCode: 200,
         message: "Profile retrieved successfully",
-        data: { user },
+        data: { user: JSON.parse(cachedUser) },
       });
     }
-    if (!userId) {
-      throw new ApiError("User not found", 401);
-    }
 
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
       select: {
         id: true,
         email: true,
@@ -89,15 +85,17 @@ export const getProfile = async (
         createdAt: true,
       },
     });
-    await client.set(rediskey, JSON.stringify(user));
-    if (!user) {
+
+    if (!dbUser) {
       throw new ApiError("User not found", 404);
     }
+
+    await client.set(rediskey, JSON.stringify(dbUser));
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Profile retrieved successfully",
-      data: { user },
+      data: { user: dbUser },
     });
   } catch (error) {
     next(error);

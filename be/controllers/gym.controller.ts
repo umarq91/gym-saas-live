@@ -3,6 +3,7 @@ import { prisma } from "../db";
 import bcrypt from "bcrypt";
 import { ApiError } from "../utils/api-error";
 import { sendResponse } from "../utils/api-response-handler";
+import { GymRequest } from "../types/auth";
 
 export const createGym = async (
   req: Request,
@@ -32,10 +33,10 @@ export const addStaff = async (
   next: NextFunction,
 ) => {
   try {
+    const { user } = req as GymRequest;
     const { name, username, email, password } = req.body;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
-
     if (existingUser) {
       throw new ApiError("Email already exists", 400);
     }
@@ -48,7 +49,7 @@ export const addStaff = async (
         email,
         password: hashedPass,
         username,
-        gymId: req?.user.gymId,
+        gymId: user.gymId,
         role: "STAFF",
       },
     });
