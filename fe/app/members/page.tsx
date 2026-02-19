@@ -41,18 +41,15 @@ export default function MembersPage() {
 
   const searchParams = useSearchParams();
 
-  // Load members on mount
   useEffect(() => {
     store.fetchMembers();
   }, []);
 
-  // Search functionality
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     store.searchMembers(query);
   };
 
-  // Handle form submission for editing
   const handleFormSubmit = async (
     data: CreateMemberInput | UpdateMemberInput,
   ) => {
@@ -69,7 +66,6 @@ export default function MembersPage() {
     return false;
   };
 
-  // Handle delete
   const handleDelete = async () => {
     if (!deleteId) return;
     const success = await store.deleteMember(deleteId);
@@ -78,7 +74,6 @@ export default function MembersPage() {
     }
   };
 
-  // Table columns
   const columns: Column<Member>[] = [
     {
       key: "name",
@@ -114,10 +109,8 @@ export default function MembersPage() {
       key: "fees",
       label: "Last fee paid at",
       render: (value) => {
-
         if(value?.length>0){
            const date = new Date(value[0]?.paidAt);
-
         return (
           date.toLocaleDateString("en-US", {
             day: "numeric",
@@ -126,24 +119,23 @@ export default function MembersPage() {
           }) || "NOT PAID"
         );
         }else{
-          return "No Record"
+          return <span className="text-muted-foreground">No Record</span>
         }
-
       },
     },
     {
       key: "isActive",
-      label: "Active Status",
+      label: "Status",
       render: (value) => (
-        <Badge
+        <span
           className={
             value === true
-              ? "bg-success/20 text-success"
-              : "bg-destructive/20 text-destructive"
+              ? "text-xs font-medium text-success bg-success/10 px-2 py-0.5 rounded-md"
+              : "text-xs font-medium text-destructive bg-destructive/10 px-2 py-0.5 rounded-md"
           }
         >
-          {value == true ? "Yes" : "No"}
-        </Badge>
+          {value == true ? "Active" : "Inactive"}
+        </span>
       ),
     },
     {
@@ -151,22 +143,22 @@ export default function MembersPage() {
       label: "Actions",
       width: "w-24",
       render: (_, member) => (
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Button
             size="sm"
             variant="ghost"
             onClick={() => setEditingMember(member)}
-            className="text-primary hover:bg-primary/10"
+            className="text-muted-foreground hover:text-foreground h-8 w-8 p-0"
           >
-            <Edit2 className="w-4 h-4" />
+            <Edit2 className="w-3.5 h-3.5" />
           </Button>
           <Button
             size="sm"
             variant="ghost"
             onClick={() => setDeleteId(member.id)}
-            className="text-destructive hover:bg-destructive/10"
+            className="text-muted-foreground hover:text-destructive h-8 w-8 p-0"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
           </Button>
         </div>
       ),
@@ -177,50 +169,47 @@ export default function MembersPage() {
     <Suspense fallback={<Loading />}>
       <DashboardLayout>
         {/* Header */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-text mb-2">Members</h2>
-          <p className="text-text-muted">
-            Manage gym members and their profiles
-          </p>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Members</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Manage gym members and their profiles
+            </p>
+          </div>
+          <Button
+            onClick={() => router.push("/members/new")}
+            className="gap-2"
+            size="sm"
+          >
+            <Plus className="w-4 h-4" />
+            Add Member
+          </Button>
         </div>
 
-        {/* Filters & Actions */}
-        <Card className="bg-card border-border p-6 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
-              <Input
-                placeholder="Search by name, email, or phone..."
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 bg-surface border-border text-text"
-              />
-            </div>
-            <Button
-              onClick={() => router.push("/members/new")}
-              className="bg-primary hover:bg-primary-dark text-white gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add Member
-            </Button>
-          </div>
-        </Card>
-
-        {/* Data Table */}
-        <Card className="bg-card border-border overflow-hidden">
-          <div className="p-6">
-            <DataTable
-              columns={columns}
-              data={store.filteredMembers}
-              isLoading={store.isLoading}
-              pagination={store.pagination}
-              onPageChange={(page) =>
-                store.fetchMembers({ ...store.filters, page })
-              }
-              emptyMessage="No members found"
+        {/* Search */}
+        <div className="mb-4">
+          <div className="relative max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by name, email, or phone..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-9"
             />
           </div>
-        </Card>
+        </div>
+
+        {/* Data Table */}
+        <DataTable
+          columns={columns}
+          data={store.filteredMembers}
+          isLoading={store.isLoading}
+          pagination={store.pagination}
+          onPageChange={(page) =>
+            store.fetchMembers({ ...store.filters, page })
+          }
+          emptyMessage="No members found"
+        />
 
         {/* Member Form Modal - Edit Only */}
         {editingMember && (
@@ -240,21 +229,21 @@ export default function MembersPage() {
           open={deleteId !== null}
           onOpenChange={(open) => !open && setDeleteId(null)}
         >
-          <AlertDialogContent className="bg-card border-border">
+          <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Delete Member</AlertDialogTitle>
-              <AlertDialogDescription className="text-text-muted">
+              <AlertDialogDescription>
                 Are you sure you want to delete this member? This action cannot
                 be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="flex gap-3 justify-end">
-              <AlertDialogCancel className="bg-surface text-text border-border hover:bg-surface/80">
+              <AlertDialogCancel>
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDelete}
-                className="bg-destructive hover:bg-red-600 text-white"
+                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
               >
                 Delete
               </AlertDialogAction>

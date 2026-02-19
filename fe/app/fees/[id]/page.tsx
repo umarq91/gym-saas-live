@@ -126,7 +126,7 @@ export default function MemberFeeDetailsPage() {
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center h-96">
           <h2 className="text-2xl font-bold mb-4">Member Not Found</h2>
-          <p className="text-text-muted mb-6">The member you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-6">The member you're looking for doesn't exist.</p>
           <Button onClick={() => router.push('/fees')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Fees
@@ -151,10 +151,10 @@ export default function MemberFeeDetailsPage() {
         
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-text mb-2">
+            <h2 className="text-3xl font-bold text-foreground mb-2">
               {memberData.name}'s Fee History
             </h2>
-            <p className="text-text-muted">
+            <p className="text-muted-foreground">
               Complete payment history and member details
             </p>
           </div>
@@ -162,7 +162,7 @@ export default function MemberFeeDetailsPage() {
           <div className="flex gap-2 mt-4 md:mt-0">
             <Button
               onClick={() => router.push(`/fees/record?memberId=${memberId}`)}
-              className="bg-primary hover:bg-primary-dark text-white"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Add New Payment
             </Button>
@@ -179,7 +179,7 @@ export default function MemberFeeDetailsPage() {
       </div>
 
       {/* Member Information Card */}
-      <Card className="bg-card border-border p-6 mb-8">
+      <Card className="p-5 mb-8">
         <div className="flex flex-col md:flex-row md:items-start justify-between">
           <div className="mb-6 md:mb-0">
             <div className="flex items-center gap-3 mb-4">
@@ -187,12 +187,12 @@ export default function MemberFeeDetailsPage() {
                 <User className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-text">{memberData.name}</h3>
+                <h3 className="text-xl font-bold text-foreground">{memberData.name}</h3>
                 <div className="flex items-center gap-4 mt-2">
-                  <Badge className={memberData.isActive ? "bg-green-500/20 text-green-600" : "bg-red-500/20 text-red-600"}>
+                  <Badge className={memberData.isActive ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}>
                     {memberData.isActive ? "Active Member" : "Inactive Member"}
                   </Badge>
-                  <span className="text-sm text-text-muted">
+                  <span className="text-sm text-muted-foreground">
                     Member since {format(new Date(memberData.joinDate), "MMM dd, yyyy")}
                   </span>
                 </div>
@@ -201,15 +201,15 @@ export default function MemberFeeDetailsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-text-muted" />
+                <Phone className="w-4 h-4 text-muted-foreground" />
                 <span className="font-medium">{memberData.phone}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-text-muted" />
+                <Mail className="w-4 h-4 text-muted-foreground" />
                 <span className="font-medium">{memberData.email || "Not provided"}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-text-muted" />
+                <Calendar className="w-4 h-4 text-muted-foreground" />
                 <span className="font-medium">
                   {format(new Date(memberData.joinDate), "MMM dd, yyyy")}
                 </span>
@@ -219,14 +219,14 @@ export default function MemberFeeDetailsPage() {
             {memberData.emergency_contact && (
               <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                 <div className="text-sm font-medium text-yellow-600 mb-1">Emergency Contact</div>
-                <div className="text-text">{memberData.emergency_contact}</div>
+                <div className="text-foreground">{memberData.emergency_contact}</div>
               </div>
             )}
           </div>
 
           <div className="md:text-right">
-            <div className="text-sm text-text-muted mb-1">Member ID</div>
-            <code className="bg-surface px-3 py-1 rounded text-sm font-mono">
+            <div className="text-sm text-muted-foreground mb-1">Member ID</div>
+            <code className="bg-muted px-3 py-1 rounded text-sm font-mono">
               {memberData.id}
             </code>
           </div>
@@ -234,18 +234,18 @@ export default function MemberFeeDetailsPage() {
 
         {memberData.notes && (
           <div className="mt-6 pt-6 border-t border-border">
-            <div className="text-sm font-medium text-text-muted mb-2">Notes</div>
-            <div className="text-text">{memberData.notes}</div>
+            <div className="text-sm font-medium text-muted-foreground mb-2">Notes</div>
+            <div className="text-foreground">{memberData.notes}</div>
           </div>
         )}
       </Card>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-card border-border p-6">
+        <Card className="p-5">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-text-muted mb-1">Total Transactions</p>
+              <p className="text-sm text-muted-foreground mb-1">Total Transactions</p>
               <p className="text-3xl font-bold text-accent">
                 {stats?.transactionCount || 0}
               </p>
@@ -256,30 +256,30 @@ export default function MemberFeeDetailsPage() {
           </div>
         </Card>
 
-        <Card className="bg-card border-border p-6">
+        <Card className="p-5">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-text-muted mb-1">Total Amount Paid</p>
-              <p className="text-3xl font-bold text-green-600">
+              <p className="text-sm text-muted-foreground mb-1">Total Amount Paid</p>
+              <p className="text-3xl font-bold text-success">
                 {formatCurrency(stats?.totalPaid || 0)}
               </p>
             </div>
-            <div className="p-3 bg-green-500/20 rounded-lg">
+            <div className="p-3 bg-success/10 rounded-lg">
               PKR
             </div>
           </div>
         </Card>
 
-        <Card className="bg-card border-border p-6">
+        <Card className="p-5">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-text-muted mb-1">Total Discount</p>
-              <p className="text-3xl font-bold text-blue-600">
+              <p className="text-sm text-muted-foreground mb-1">Total Discount</p>
+              <p className="text-3xl font-bold text-primary">
                 {formatCurrency(stats?.totalDiscount || 0)}
               </p>
             </div>
-            <div className="p-3 bg-blue-500/20 rounded-lg">
-              <span className="text-blue-600 font-medium">%</span>
+            <div className="p-3 bg-primary/10 rounded-lg">
+              <span className="text-primary font-medium">%</span>
             </div>
           </div>
         </Card>
@@ -288,27 +288,27 @@ export default function MemberFeeDetailsPage() {
 
       {/* Last Payment Summary */}
       {stats?.lastPayment && (
-        <Card className="bg-card border-border p-6 mb-8">
-          <h3 className="text-lg font-semibold text-text mb-4">Last Payment</h3>
+        <Card className="p-5 mb-8">
+          <h3 className="text-lg font-semibold text-foreground mb-4">Last Payment</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <div className="text-sm text-text-muted mb-1">Amount</div>
-              <div className="text-xl font-bold text-green-600">
+              <div className="text-sm text-muted-foreground mb-1">Amount</div>
+              <div className="text-xl font-bold text-success">
                 {formatCurrency(stats.lastPayment.amountPaid)}
               </div>
             </div>
             <div>
-              <div className="text-sm text-text-muted mb-1">Date</div>
+              <div className="text-sm text-muted-foreground mb-1">Date</div>
               <div className="text-xl font-medium">
                 {format(new Date(stats.lastPayment.paidAt), "MMM dd, yyyy")}
               </div>
             </div>
             <div>
-              <div className="text-sm text-text-muted mb-1">Type</div>
+              <div className="text-sm text-muted-foreground mb-1">Type</div>
               <Badge variant="outline">{stats.lastPayment.type}</Badge>
             </div>
             <div>
-              <div className="text-sm text-text-muted mb-1">Collected By</div>
+              <div className="text-sm text-muted-foreground mb-1">Collected By</div>
               <div className="text-xl font-medium">
                 {stats.lastPayment.takenBy.name}
               </div>
@@ -318,14 +318,14 @@ export default function MemberFeeDetailsPage() {
       )}
 
       {/* Fee History Table */}
-      <Card className="bg-card border-border overflow-hidden">
+      <Card className="overflow-hidden">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-text">
+            <h3 className="text-lg font-semibold text-foreground">
               Payment History {feesData && `(${feesData.length} transactions)`}
             </h3>
             {feesData && feesData.length > 0 && (
-              <div className="text-sm text-text-muted">
+              <div className="text-sm text-muted-foreground">
                 Total billed: {formatCurrency(stats?.totalOriginal || 0)}
               </div>
             )}
@@ -347,14 +347,14 @@ export default function MemberFeeDetailsPage() {
                 </TableHeader>
                 <TableBody>
                   {feesData.map((fee) => (
-                    <TableRow key={fee.id} className="hover:bg-surface">
+                    <TableRow key={fee.id} className="hover:bg-muted/50">
                       <TableCell className="font-medium">
                         <div>
                           {format(new Date(fee.paidAt), "MMM dd, yyyy")}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="bg-surface">
+                        <Badge variant="outline" className="bg-muted">
                           {fee.type}
                         </Badge>
                       </TableCell>
@@ -364,27 +364,27 @@ export default function MemberFeeDetailsPage() {
                       <TableCell>
                         {fee.discountType && fee.discountApplied ? (
                           <div className="flex flex-col">
-                            <span className="text-green-600">
+                            <span className="text-success">
                               -{formatCurrency(fee.originalAmount - fee.amountPaid)}
                             </span>
-                            <span className="text-xs text-text-muted">
+                            <span className="text-xs text-muted-foreground">
                               {fee.discountApplied} {fee.discountType.toLowerCase()}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-text-muted">-</span>
+                          <span className="text-muted-foreground">-</span>
                         )}
                       </TableCell>
-                      <TableCell className="font-semibold text-green-600">
+                      <TableCell className="font-semibold text-success">
                         {formatCurrency(fee.amountPaid)}
                       </TableCell>
                       <TableCell>
                         <div>
                           <div className="font-medium">{fee.takenBy.name}</div>
-                          <div className="text-xs text-text-muted">{fee.takenBy.role}</div>
+                          <div className="text-xs text-muted-foreground">{fee.takenBy.role}</div>
                         </div>
                       </TableCell>
-                      <TableCell className="text-sm text-text-muted">
+                      <TableCell className="text-sm text-muted-foreground">
                         {format(new Date(fee.createdAt), "hh:mm a")}
                       </TableCell>
                     </TableRow>
@@ -394,16 +394,16 @@ export default function MemberFeeDetailsPage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="mx-auto w-16 h-16 bg-surface rounded-full flex items-center justify-center mb-4">
-                <Calendar className="w-8 h-8 text-text-muted" />
+              <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                <Calendar className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h4 className="text-lg font-medium text-text mb-2">No Payment History</h4>
-              <p className="text-text-muted mb-6 max-w-md mx-auto">
+              <h4 className="text-lg font-medium text-foreground mb-2">No Payment History</h4>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                 This member hasn't made any payments yet. Record their first payment to get started.
               </p>
               <Button
                 onClick={() => router.push(`/fees/record?memberId=${memberId}`)}
-                className="bg-primary hover:bg-primary-dark text-white"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 Record First Payment
               </Button>
@@ -414,22 +414,22 @@ export default function MemberFeeDetailsPage() {
 
       {/* Summary Footer */}
       {stats && feesData && feesData.length > 0 && (
-        <div className="mt-6 flex flex-col md:flex-row justify-between items-center p-4 bg-surface rounded-lg">
-          <div className="text-sm text-text-muted mb-2 md:mb-0">
+        <div className="mt-6 flex flex-col md:flex-row justify-between items-center p-4 bg-muted rounded-lg">
+          <div className="text-sm text-muted-foreground mb-2 md:mb-0">
             Showing {feesData.length} transaction{feesData.length !== 1 ? 's' : ''}
           </div>
           <div className="flex gap-6">
             <div className="text-right">
-              <div className="text-sm text-text-muted">Total Billed</div>
+              <div className="text-sm text-muted-foreground">Total Billed</div>
               <div className="text-lg font-bold">{formatCurrency(stats.totalOriginal)}</div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-text-muted">Total Paid</div>
-              <div className="text-lg font-bold text-green-600">{formatCurrency(stats.totalPaid)}</div>
+              <div className="text-sm text-muted-foreground">Total Paid</div>
+              <div className="text-lg font-bold text-success">{formatCurrency(stats.totalPaid)}</div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-text-muted">Total Discount</div>
-              <div className="text-lg font-bold text-blue-600">{formatCurrency(stats.totalDiscount)}</div>
+              <div className="text-sm text-muted-foreground">Total Discount</div>
+              <div className="text-lg font-bold text-primary">{formatCurrency(stats.totalDiscount)}</div>
             </div>
           </div>
         </div>

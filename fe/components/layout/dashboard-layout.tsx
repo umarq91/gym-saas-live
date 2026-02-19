@@ -14,17 +14,11 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
   return (
     <AuthGuard allowedRoles={allowedRoles}>
       <div className="flex h-screen bg-background">
-        {/* Sidebar */}
         <Sidebar />
-
-        {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Top Navigation */}
           <TopNav />
-
-          {/* Page Content */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="p-6">
+          <main className="flex-1 overflow-y-auto bg-background">
+            <div className="p-6 max-w-[1400px]">
               {children}
             </div>
           </main>

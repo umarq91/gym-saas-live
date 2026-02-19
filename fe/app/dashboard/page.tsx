@@ -59,32 +59,47 @@ interface StatCard {
 
 function StatCard({ label, value, change, icon, color }: StatCard) {
   return (
-    <Card className="bg-card border-border p-6">
+    <Card className="p-5">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-text-muted mb-1">{label}</p>
-          <p className="text-3xl font-bold text-text">{value}</p>
+          <p className="text-xs font-medium text-muted-foreground mb-1.5">{label}</p>
+          <p className="text-2xl font-bold text-foreground">{value}</p>
           {change !== undefined && (
             <div className="flex items-center gap-1 mt-2">
               {change > 0 ? (
                 <>
-                  <ArrowUpRight className="w-4 h-4 text-success" />
-                  <span className="text-sm text-success">+{change}% from last month</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-success" />
+                  <span className="text-xs text-success font-medium">+{change}%</span>
                 </>
               ) : (
                 <>
-                  <ArrowDownRight className="w-4 h-4 text-destructive" />
-                  <span className="text-sm text-destructive">{change}% from last month</span>
+                  <ArrowDownRight className="w-3.5 h-3.5 text-destructive" />
+                  <span className="text-xs text-destructive font-medium">{change}%</span>
                 </>
               )}
+              <span className="text-xs text-muted-foreground">vs last month</span>
             </div>
           )}
         </div>
-        <div className={`p-3 rounded-lg ${color}`}>
+        <div className={`p-2.5 rounded-xl ${color}`}>
           {icon}
         </div>
       </div>
     </Card>
+  );
+}
+
+function ChartTooltip({ active, payload, label }: any) {
+  if (!active || !payload) return null;
+  return (
+    <div className="bg-popover border border-border/50 rounded-lg shadow-lg px-3 py-2 text-xs">
+      <p className="font-medium text-foreground mb-1">{label}</p>
+      {payload.map((entry: any, idx: number) => (
+        <p key={idx} style={{ color: entry.color }} className="text-muted-foreground">
+          {entry.name}: <span className="font-medium" style={{ color: entry.color }}>{entry.value}</span>
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -93,87 +108,79 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      {/* Header with Action Buttons */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-text mb-1">Welcome back!</h2>
-          <p className="text-text-muted">Here's your gym performance overview</p>
-        </div>
-        <div className="flex gap-3">
-          <Button variant="outline">Export Report</Button>
-          <Button className="bg-primary hover:bg-primary-dark text-white">
-            View Details
-          </Button>
-        </div>
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-foreground">Welcome back</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">Here's your gym performance overview</p>
       </div>
 
       {/* Stats Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
           label="Total Members"
-          value={isLoading ? <Skeleton className="h-9 w-20" /> : '1,248'}
+          value={isLoading ? <Skeleton className="h-8 w-16" /> : '1,248'}
           change={12}
-          icon={<Users className="w-6 h-6 text-white" />}
-          color="bg-primary/20"
+          icon={<Users className="w-5 h-5 text-primary" />}
+          color="bg-primary/10"
         />
         <StatCard
           label="Monthly Revenue"
-          value={isLoading ? <Skeleton className="h-9 w-20" /> : '$45,300'}
+          value={isLoading ? <Skeleton className="h-8 w-16" /> : '$45,300'}
           change={8}
-          icon={<DollarSign className="w-6 h-6 text-white" />}
-          color="bg-accent/20"
+          icon={<DollarSign className="w-5 h-5 text-success" />}
+          color="bg-success/10"
         />
         <StatCard
           label="Attendance Rate"
-          value={isLoading ? <Skeleton className="h-9 w-20" /> : '78%'}
+          value={isLoading ? <Skeleton className="h-8 w-16" /> : '78%'}
           change={-5}
-          icon={<Activity className="w-6 h-6 text-white" />}
-          color="bg-secondary/20"
+          icon={<Activity className="w-5 h-5 text-warning" />}
+          color="bg-warning/10"
         />
         <StatCard
           label="Active Trainers"
-          value={isLoading ? <Skeleton className="h-9 w-20" /> : '12'}
+          value={isLoading ? <Skeleton className="h-8 w-16" /> : '12'}
           change={2}
-          icon={<TrendingUp className="w-6 h-6 text-white" />}
-          color="bg-primary/20"
+          icon={<TrendingUp className="w-5 h-5 text-chart-3" />}
+          color="bg-chart-3/10"
         />
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Revenue Chart */}
-        <Card className="bg-card border-border p-6 lg:col-span-2">
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-text">Revenue Trends</h3>
-            <p className="text-sm text-text-muted">Monthly revenue vs targets</p>
+        <Card className="p-5 lg:col-span-2">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-foreground">Revenue Trends</h3>
+            <p className="text-xs text-muted-foreground">Monthly revenue vs targets</p>
           </div>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={280}>
             <BarChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-              <XAxis dataKey="month" stroke="rgba(255,255,255,0.5)" />
-              <YAxis stroke="rgba(255,255,255,0.5)" />
-              <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-              <Legend />
-              <Bar dataKey="revenue" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="target" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
+              <XAxis dataKey="month" className="text-xs" tick={{ fill: 'var(--muted-foreground)' }} />
+              <YAxis className="text-xs" tick={{ fill: 'var(--muted-foreground)' }} />
+              <Tooltip content={<ChartTooltip />} />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Bar dataKey="revenue" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="target" fill="var(--chart-3)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Card>
 
         {/* Quick Actions */}
-        <Card className="bg-card border-border p-6">
-          <h3 className="text-lg font-semibold text-text mb-4">Quick Actions</h3>
-          <div className="space-y-3">
-            <Button className="w-full bg-primary hover:bg-primary-dark text-white justify-start">
+        <Card className="p-5">
+          <h3 className="text-sm font-semibold text-foreground mb-4">Quick Actions</h3>
+          <div className="space-y-2">
+            <Button className="w-full justify-start" size="sm">
               Add New Member
             </Button>
-            <Button variant="outline" className="w-full justify-start bg-transparent">
+            <Button variant="outline" className="w-full justify-start" size="sm">
               Mark Attendance
             </Button>
-            <Button variant="outline" className="w-full justify-start bg-transparent">
+            <Button variant="outline" className="w-full justify-start" size="sm">
               Record Payment
             </Button>
-            <Button variant="outline" className="w-full justify-start bg-transparent">
+            <Button variant="outline" className="w-full justify-start" size="sm">
               View Reports
             </Button>
           </div>
@@ -181,63 +188,63 @@ export default function DashboardPage() {
       </div>
 
       {/* Attendance Chart */}
-      <Card className="bg-card border-border p-6">
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-text">Weekly Attendance</h3>
-          <p className="text-sm text-text-muted">Members present by day</p>
+      <Card className="p-5 mb-6">
+        <div className="mb-4">
+          <h3 className="text-sm font-semibold text-foreground">Weekly Attendance</h3>
+          <p className="text-xs text-muted-foreground">Members present by day</p>
         </div>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={280}>
           <LineChart data={attendanceData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis dataKey="date" stroke="rgba(255,255,255,0.5)" />
-            <YAxis stroke="rgba(255,255,255,0.5)" />
-            <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none' }} />
-            <Legend />
+            <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
+            <XAxis dataKey="date" className="text-xs" tick={{ fill: 'var(--muted-foreground)' }} />
+            <YAxis className="text-xs" tick={{ fill: 'var(--muted-foreground)' }} />
+            <Tooltip content={<ChartTooltip />} />
+            <Legend wrapperStyle={{ fontSize: '12px' }} />
             <Line
               type="monotone"
               dataKey="members"
-              stroke="#10b981"
+              stroke="var(--chart-2)"
               strokeWidth={2}
-              dot={{ fill: '#10b981', r: 4 }}
+              dot={{ fill: 'var(--chart-2)', r: 3 }}
             />
             <Line
               type="monotone"
               dataKey="percent"
-              stroke="#3b82f6"
+              stroke="var(--chart-1)"
               strokeWidth={2}
-              dot={{ fill: '#3b82f6', r: 4 }}
+              dot={{ fill: 'var(--chart-1)', r: 3 }}
             />
           </LineChart>
         </ResponsiveContainer>
       </Card>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        <Card className="bg-card border-border p-6">
-          <h3 className="text-lg font-semibold text-text mb-4">Recent Members</h3>
-          <div className="space-y-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card className="p-5">
+          <h3 className="text-sm font-semibold text-foreground mb-3">Recent Members</h3>
+          <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded bg-surface/50">
+              <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                 <div>
-                  <p className="text-sm font-medium text-text">John Doe</p>
-                  <p className="text-xs text-text-muted">Joined 2 days ago</p>
+                  <p className="text-sm font-medium text-foreground">John Doe</p>
+                  <p className="text-xs text-muted-foreground">Joined 2 days ago</p>
                 </div>
-                <span className="badge-success">Active</span>
+                <span className="text-xs font-medium text-success bg-success/10 px-2 py-0.5 rounded-md">Active</span>
               </div>
             ))}
           </div>
         </Card>
 
-        <Card className="bg-card border-border p-6">
-          <h3 className="text-lg font-semibold text-text mb-4">Pending Payments</h3>
-          <div className="space-y-3">
+        <Card className="p-5">
+          <h3 className="text-sm font-semibold text-foreground mb-3">Pending Payments</h3>
+          <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded bg-surface/50">
+              <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                 <div>
-                  <p className="text-sm font-medium text-text">Jane Smith</p>
-                  <p className="text-xs text-text-muted">Due: $45.00</p>
+                  <p className="text-sm font-medium text-foreground">Jane Smith</p>
+                  <p className="text-xs text-muted-foreground">Due: $45.00</p>
                 </div>
-                <span className="badge-warning">Pending</span>
+                <span className="text-xs font-medium text-warning bg-warning/10 px-2 py-0.5 rounded-md">Pending</span>
               </div>
             ))}
           </div>

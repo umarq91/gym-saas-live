@@ -102,20 +102,20 @@ export default function GymPage() {
   return (
     <DashboardLayout allowedRoles={['OWNER', 'SUPER_USER']}>
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-text mb-2">Gym Management</h2>
-        <p className="text-text-muted">Manage your gym settings and staff</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-foreground">Gym Management</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">Manage your gym settings and staff</p>
       </div>
 
       {/* Gym Details */}
-      <Card className="bg-card border-border p-8 mb-8">
-        <div className="flex items-start justify-between mb-8">
+      <Card className="p-6 mb-6">
+        <div className="flex items-start justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-text mb-2">FitFlow Gym</h3>
+            <h3 className="text-xl font-bold text-foreground mb-1.5">FitFlow Gym</h3>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-text-muted" />
-                <p className="text-sm text-text-muted">123 Fitness St, New York, NY 10001</p>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">123 Fitness St, New York, NY 10001</p>
               </div>
               <a
                 href="https://maps.google.com"
@@ -127,10 +127,10 @@ export default function GymPage() {
               </a>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-3">
-            <Badge className="bg-success/20 text-success">Active</Badge>
+          <div className="flex flex-col items-end gap-2">
+            <span className="text-xs font-medium text-success bg-success/10 px-2 py-0.5 rounded-md">Active</span>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-text-muted">Gym Status:</span>
+              <span className="text-xs text-muted-foreground">Gym Status:</span>
               <Switch
                 checked={gymStatus}
                 onCheckedChange={setGymStatus}
@@ -140,38 +140,39 @@ export default function GymPage() {
           </div>
         </div>
 
-        <Separator className="my-6 bg-border" />
+        <Separator className="my-5" />
 
         {/* Plan Information */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-surface/50 rounded-lg border border-border">
-            <p className="text-sm text-text-muted mb-1">Current Plan</p>
-            <p className="text-2xl font-bold text-primary">PRO</p>
-            <p className="text-xs text-text-muted mt-2">Highest tier features</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 bg-muted/30 rounded-xl">
+            <p className="text-xs text-muted-foreground mb-1">Current Plan</p>
+            <p className="text-xl font-bold text-primary">PRO</p>
+            <p className="text-xs text-muted-foreground mt-1.5">Highest tier features</p>
           </div>
-          <div className="p-4 bg-surface/50 rounded-lg border border-border">
-            <p className="text-sm text-text-muted mb-1">Member Limit</p>
-            <p className="text-2xl font-bold text-accent">Unlimited</p>
-            <p className="text-xs text-text-muted mt-2">1,248 / Unlimited</p>
+          <div className="p-4 bg-muted/30 rounded-xl">
+            <p className="text-xs text-muted-foreground mb-1">Member Limit</p>
+            <p className="text-xl font-bold text-foreground">Unlimited</p>
+            <p className="text-xs text-muted-foreground mt-1.5">1,248 / Unlimited</p>
           </div>
-          <div className="p-4 bg-surface/50 rounded-lg border border-border">
-            <p className="text-sm text-text-muted mb-1">Renewal Date</p>
-            <p className="text-2xl font-bold text-secondary">Mar 15, 2025</p>
-            <p className="text-xs text-text-muted mt-2">45 days remaining</p>
+          <div className="p-4 bg-muted/30 rounded-xl">
+            <p className="text-xs text-muted-foreground mb-1">Renewal Date</p>
+            <p className="text-xl font-bold text-foreground">Mar 15, 2025</p>
+            <p className="text-xs text-muted-foreground mt-1.5">45 days remaining</p>
           </div>
         </div>
       </Card>
 
       {/* Staff Management */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-2xl font-bold text-text mb-1">Staff Members</h3>
-            <p className="text-text-muted">Manage gym staff and their roles</p>
+            <h3 className="text-lg font-semibold text-foreground">Staff Members</h3>
+            <p className="text-sm text-muted-foreground mt-0.5">Manage gym staff and their roles</p>
           </div>
           <Button
             onClick={() => setStaffOpen(true)}
-            className="bg-primary hover:bg-primary-dark text-white gap-2"
+            size="sm"
+            className="gap-2"
           >
             <Plus className="w-4 h-4" />
             Add Staff
@@ -179,54 +180,51 @@ export default function GymPage() {
         </div>
 
         {/* Staff Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {staff.map((member) => (
-            <Card key={member.id} className="bg-card border-border p-6">
-              <div className="flex items-start justify-between mb-4">
+            <Card key={member.id} className="p-5">
+              <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">
+                  <div className="w-10 h-10 bg-primary/15 rounded-lg flex items-center justify-center">
+                    <span className="text-primary font-bold text-sm">
                       {member.name.charAt(0)}
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-text">{member.name}</h4>
-                    <p className="text-sm text-text-muted">{member.role}</p>
+                    <h4 className="font-medium text-foreground text-sm">{member.name}</h4>
+                    <p className="text-xs text-muted-foreground">{member.role}</p>
                   </div>
                 </div>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => handleDeleteStaff(member.id)}
-                  className="text-destructive hover:bg-destructive/10"
+                  className="text-muted-foreground hover:text-destructive h-8 w-8 p-0"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </Button>
               </div>
 
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center gap-2 text-text-muted">
-                  <Mail className="w-4 h-4" />
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="text-primary hover:underline"
-                  >
+              <div className="space-y-2 text-xs">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Mail className="w-3.5 h-3.5" />
+                  <a href={`mailto:${member.email}`} className="text-primary hover:underline">
                     {member.email}
                   </a>
                 </div>
-                <div className="flex items-center gap-2 text-text-muted">
-                  <Phone className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="w-3.5 h-3.5" />
                   <a href={`tel:${member.phone}`} className="text-primary hover:underline">
                     {member.phone}
                   </a>
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-                <span className="text-xs text-text-muted">
+              <div className="mt-3 pt-3 border-t border-border/50 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">
                   Joined {member.joinDate}
                 </span>
-                <Badge className="bg-success/20 text-success">{member.status}</Badge>
+                <span className="text-xs font-medium text-success bg-success/10 px-2 py-0.5 rounded-md">{member.status}</span>
               </div>
             </Card>
           ))}
@@ -235,16 +233,16 @@ export default function GymPage() {
 
       {/* Add Staff Dialog */}
       <Dialog open={staffOpen} onOpenChange={setStaffOpen}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Add Staff Member</DialogTitle>
-            <DialogDescription className="text-text-muted">
+            <DialogDescription>
               Add a new staff member to your gym
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="name">Name *</Label>
               <Input
                 id="name"
@@ -253,11 +251,10 @@ export default function GymPage() {
                 onChange={(e) =>
                   setStaffForm({ ...staffForm, name: e.target.value })
                 }
-                className="bg-surface border-border text-text"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
@@ -267,11 +264,10 @@ export default function GymPage() {
                 onChange={(e) =>
                   setStaffForm({ ...staffForm, email: e.target.value })
                 }
-                className="bg-surface border-border text-text"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="phone">Phone *</Label>
               <Input
                 id="phone"
@@ -281,11 +277,10 @@ export default function GymPage() {
                 onChange={(e) =>
                   setStaffForm({ ...staffForm, phone: e.target.value })
                 }
-                className="bg-surface border-border text-text"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="role">Role</Label>
               <select
                 id="role"
@@ -293,7 +288,7 @@ export default function GymPage() {
                 onChange={(e) =>
                   setStaffForm({ ...staffForm, role: e.target.value })
                 }
-                className="w-full bg-surface border border-border text-text rounded px-3 py-2"
+                className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
               >
                 <option value="Manager">Manager</option>
                 <option value="Trainer">Trainer</option>
@@ -302,14 +297,11 @@ export default function GymPage() {
               </select>
             </div>
 
-            <div className="flex gap-3 justify-end pt-4">
+            <div className="flex gap-3 justify-end pt-2">
               <Button variant="outline" onClick={() => setStaffOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                onClick={handleAddStaff}
-                className="bg-primary hover:bg-primary-dark text-white"
-              >
+              <Button onClick={handleAddStaff}>
                 Add Staff
               </Button>
             </div>

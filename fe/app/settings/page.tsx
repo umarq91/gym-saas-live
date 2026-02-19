@@ -46,16 +46,16 @@ export default function SettingsPage() {
   return (
     <DashboardLayout>
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-text mb-2">Settings</h2>
-        <p className="text-text-muted">Manage your account settings and preferences</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-foreground">Settings</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">Manage your account settings and preferences</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Sidebar Navigation */}
         <div className="lg:col-span-1">
-          <Card className="bg-card border-border overflow-hidden">
-            <div className="space-y-1">
+          <Card className="overflow-hidden p-0">
+            <div className="space-y-0.5 p-1">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -63,14 +63,14 @@ export default function SettingsPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm rounded-lg transition-all ${
                       isActive
-                        ? 'bg-primary/20 text-primary border-l-2 border-primary'
-                        : 'text-text-muted hover:bg-surface/50'
+                        ? 'bg-primary/10 text-primary font-medium'
+                        : 'text-muted-foreground hover:bg-muted/50'
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{tab.label}</span>
+                    <Icon className="w-4 h-4" />
+                    <span>{tab.label}</span>
                   </button>
                 );
               })}
@@ -79,36 +79,36 @@ export default function SettingsPage() {
         </div>
 
         {/* Content Area */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-4">
           {/* Profile Tab */}
           {activeTab === 'profile' && (
-            <Card className="bg-card border-border p-6">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-text mb-2">Profile Information</h3>
-                <p className="text-text-muted">Update your personal details</p>
+            <Card className="p-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-1">Profile Information</h3>
+                <p className="text-sm text-muted-foreground">Update your personal details</p>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {/* Avatar */}
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                    <span className="text-2xl text-white font-bold">
+                  <div className="w-14 h-14 bg-primary/15 rounded-full flex items-center justify-center">
+                    <span className="text-xl text-primary font-bold">
                       {user?.name?.charAt(0) || 'U'}
                     </span>
                   </div>
                   <div>
-                    <Button variant="outline" className="mb-2 block bg-transparent">
+                    <Button variant="outline" size="sm" className="mb-1 block">
                       Change Avatar
                     </Button>
-                    <p className="text-xs text-text-muted">JPG, PNG or GIF. Max 5MB</p>
+                    <p className="text-xs text-muted-foreground">JPG, PNG or GIF. Max 5MB</p>
                   </div>
                 </div>
 
-                <Separator className="bg-border" />
+                <Separator />
 
-                {/* Name */}
+                {/* Name & Email */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
@@ -116,10 +116,9 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setProfileData({ ...profileData, name: e.target.value })
                       }
-                      className="bg-surface border-border text-text"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
@@ -128,14 +127,13 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setProfileData({ ...profileData, email: e.target.value })
                       }
-                      className="bg-surface border-border text-text"
                     />
                   </div>
                 </div>
 
-                {/* Phone & Bio */}
+                {/* Phone & Role */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
@@ -145,19 +143,18 @@ export default function SettingsPage() {
                       onChange={(e) =>
                         setProfileData({ ...profileData, phone: e.target.value })
                       }
-                      className="bg-surface border-border text-text"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label>Role</Label>
-                    <div className="flex items-center gap-2 p-2 bg-surface border border-border rounded">
-                      <Badge className="bg-primary/20 text-primary">{user?.role}</Badge>
+                    <div className="flex items-center gap-2 h-9 px-3 bg-muted/50 border border-border rounded-md">
+                      <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">{user?.role}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Bio */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea
                     id="bio"
@@ -166,16 +163,12 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setProfileData({ ...profileData, bio: e.target.value })
                     }
-                    className="bg-surface border-border text-text min-h-24"
+                    className="min-h-20"
                   />
                 </div>
 
-                {/* Save Button */}
                 <div className="flex justify-end">
-                  <Button
-                    onClick={handleSaveProfile}
-                    className="bg-primary hover:bg-primary-dark text-white"
-                  >
+                  <Button onClick={handleSaveProfile}>
                     Save Changes
                   </Button>
                 </div>
@@ -185,18 +178,17 @@ export default function SettingsPage() {
 
           {/* Security Tab */}
           {activeTab === 'security' && (
-            <Card className="bg-card border-border p-6">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-text mb-2">Security Settings</h3>
-                <p className="text-text-muted">Manage your password and security options</p>
+            <Card className="p-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-1">Security Settings</h3>
+                <p className="text-sm text-muted-foreground">Manage your password and security options</p>
               </div>
 
-              <div className="space-y-6">
-                {/* Change Password */}
-                <div className="p-4 bg-surface/50 rounded-lg border border-border">
-                  <h4 className="font-semibold text-text mb-4">Change Password</h4>
+              <div className="space-y-5">
+                <div className="p-4 bg-muted/30 rounded-xl">
+                  <h4 className="font-medium text-foreground text-sm mb-3">Change Password</h4>
                   <div className="space-y-3">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <Label htmlFor="currentPassword">Current Password</Label>
                       <Input
                         id="currentPassword"
@@ -208,10 +200,9 @@ export default function SettingsPage() {
                             currentPassword: e.target.value,
                           })
                         }
-                        className="bg-surface border-border text-text"
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <Label htmlFor="newPassword">New Password</Label>
                       <Input
                         id="newPassword"
@@ -223,10 +214,9 @@ export default function SettingsPage() {
                             newPassword: e.target.value,
                           })
                         }
-                        className="bg-surface border-border text-text"
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <Label htmlFor="confirmPassword">Confirm Password</Label>
                       <Input
                         id="confirmPassword"
@@ -238,27 +228,22 @@ export default function SettingsPage() {
                             confirmPassword: e.target.value,
                           })
                         }
-                        className="bg-surface border-border text-text"
                       />
                     </div>
                   </div>
                   <div className="mt-4">
-                    <Button
-                      onClick={handleChangePassword}
-                      className="bg-primary hover:bg-primary-dark text-white"
-                    >
+                    <Button onClick={handleChangePassword}>
                       Update Password
                     </Button>
                   </div>
                 </div>
 
-                <Separator className="bg-border" />
+                <Separator />
 
-                {/* Two Factor Auth */}
-                <div className="flex items-center justify-between p-4 bg-surface/50 rounded-lg border border-border">
+                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-xl">
                   <div>
-                    <h4 className="font-semibold text-text">Two-Factor Authentication</h4>
-                    <p className="text-sm text-text-muted mt-1">
+                    <h4 className="font-medium text-foreground text-sm">Two-Factor Authentication</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       Add an extra layer of security
                     </p>
                   </div>
@@ -270,13 +255,13 @@ export default function SettingsPage() {
 
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
-            <Card className="bg-card border-border p-6">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-text mb-2">Notifications</h3>
-                <p className="text-text-muted">Manage how you receive updates</p>
+            <Card className="p-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-1">Notifications</h3>
+                <p className="text-sm text-muted-foreground">Manage how you receive updates</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {[
                   { title: 'Email Notifications', desc: 'Get updates via email' },
                   { title: 'Payment Alerts', desc: 'Alert when payments are received' },
@@ -285,11 +270,11 @@ export default function SettingsPage() {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-4 bg-surface/50 rounded-lg border border-border"
+                    className="flex items-center justify-between p-4 rounded-xl hover:bg-muted/30 transition-colors"
                   >
                     <div>
-                      <h4 className="font-semibold text-text">{item.title}</h4>
-                      <p className="text-sm text-text-muted">{item.desc}</p>
+                      <h4 className="font-medium text-foreground text-sm">{item.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
                     </div>
                     <Switch defaultChecked={idx < 2} />
                   </div>
@@ -300,13 +285,13 @@ export default function SettingsPage() {
 
           {/* Preferences Tab */}
           {activeTab === 'preferences' && (
-            <Card className="bg-card border-border p-6">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-text mb-2">Preferences</h3>
-                <p className="text-text-muted">Customize your experience</p>
+            <Card className="p-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-1">Preferences</h3>
+                <p className="text-sm text-muted-foreground">Customize your experience</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {[
                   { title: 'Dark Mode', desc: 'Always use dark theme' },
                   { title: 'Compact View', desc: 'Show more data in tables' },
@@ -314,11 +299,11 @@ export default function SettingsPage() {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-4 bg-surface/50 rounded-lg border border-border"
+                    className="flex items-center justify-between p-4 rounded-xl hover:bg-muted/30 transition-colors"
                   >
                     <div>
-                      <h4 className="font-semibold text-text">{item.title}</h4>
-                      <p className="text-sm text-text-muted">{item.desc}</p>
+                      <h4 className="font-medium text-foreground text-sm">{item.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
                     </div>
                     <Switch defaultChecked={idx === 0} />
                   </div>
@@ -328,9 +313,9 @@ export default function SettingsPage() {
           )}
 
           {/* Logout Section */}
-          <Card className="bg-destructive/10 border border-destructive p-6">
-            <h3 className="text-xl font-bold text-destructive mb-2">Danger Zone</h3>
-            <p className="text-sm text-destructive/80 mb-4">
+          <Card className="p-5 border-destructive/30 bg-destructive/5">
+            <h3 className="text-sm font-semibold text-destructive mb-1">Danger Zone</h3>
+            <p className="text-xs text-muted-foreground mb-3">
               Log out from your account on all devices
             </p>
             <Button
@@ -338,9 +323,11 @@ export default function SettingsPage() {
                 logout();
                 window.location.href = '/login';
               }}
-              className="bg-destructive hover:bg-red-600 text-white gap-2"
+              variant="destructive"
+              size="sm"
+              className="gap-2"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
               Logout
             </Button>
           </Card>

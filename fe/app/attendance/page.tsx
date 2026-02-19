@@ -330,17 +330,17 @@ export default function AttendancePage() {
   return (
     <DashboardLayout>
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-text mb-2">Attendance</h2>
-        <p className="text-text-muted">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-foreground">Attendance</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">
           Search a member to mark or review — absent days are inferred automatically
         </p>
       </div>
 
       {/* ── Search ─────────────────────────────────────────────────────────── */}
-      <Card className="bg-card border-border p-6 mb-6">
+      <Card className="p-5 mb-6">
         <div className="relative max-w-lg">
-          <Search className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
+          <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search member by name or phone..."
             value={searchQuery}
@@ -351,13 +351,13 @@ export default function AttendancePage() {
             }}
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-            className="pl-10 bg-surface border-border text-text"
+            className="pl-10"
           />
 
           {showDropdown && searchQuery.trim() && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-64 overflow-auto">
+            <div className="absolute z-50 w-full mt-1 bg-popover border border-border/50 rounded-xl shadow-lg max-h-64 overflow-auto">
               {isSearching ? (
-                <div className="p-4 flex items-center justify-center gap-2 text-text-muted">
+                <div className="p-4 flex items-center justify-center gap-2 text-muted-foreground">
                   <Loader2 className="w-4 h-4 animate-spin" /> Searching...
                 </div>
               ) : searchResults.length > 0 ? (
@@ -365,12 +365,12 @@ export default function AttendancePage() {
                   <button
                     key={m.id}
                     onMouseDown={() => handleSelectMember(m)}
-                    className="w-full text-left px-4 py-3 hover:bg-surface transition-colors border-b border-border last:border-0"
+                    className="w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors border-b border-border/50 last:border-0"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-text">{m.name}</p>
-                        <p className="text-sm text-text-muted">{m.phone}</p>
+                        <p className="font-medium text-foreground">{m.name}</p>
+                        <p className="text-sm text-muted-foreground">{m.phone}</p>
                       </div>
                       <Badge className={m.isActive ? 'bg-success/20 text-success' : 'bg-destructive/20 text-destructive'}>
                         {m.isActive ? 'Active' : 'Inactive'}
@@ -379,7 +379,7 @@ export default function AttendancePage() {
                   </button>
                 ))
               ) : (
-                <div className="p-4 text-center text-text-muted">No members found</div>
+                <div className="p-4 text-center text-muted-foreground">No members found</div>
               )}
             </div>
           )}
@@ -390,14 +390,14 @@ export default function AttendancePage() {
           DEFAULT VIEW — no member selected: show today's gym-wide overview
       ══════════════════════════════════════════════════════════════════════ */}
       {!selectedMember && (
-        <Card className="bg-card border-border overflow-hidden">
+        <Card className="overflow-hidden">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-text flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-primary" />
                   Today's Attendance
-                  <span className="text-text-muted font-normal text-base">
+                  <span className="text-muted-foreground font-normal text-base">
                     — {format(new Date(), 'EEEE, MMM dd yyyy')}
                   </span>
                 </h3>
@@ -412,7 +412,7 @@ export default function AttendancePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 text-text-muted"
+                  className="h-8 text-muted-foreground"
                   onClick={fetchTodayOverview}
                   disabled={isLoadingToday}
                 >
@@ -428,10 +428,10 @@ export default function AttendancePage() {
                 ))}
               </div>
             ) : todayRecords.length > 0 ? (
-              <div className="border border-border rounded-lg overflow-hidden">
+              <div className="rounded-xl border border-border/50 overflow-hidden">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-surface/50">
+                    <TableRow className="bg-muted/40">
                       <TableHead>#</TableHead>
                       <TableHead>Member</TableHead>
                       <TableHead>Marked By</TableHead>
@@ -440,8 +440,8 @@ export default function AttendancePage() {
                   </TableHeader>
                   <TableBody>
                     {todayRecords.map((r, i) => (
-                      <TableRow key={r.id} className="hover:bg-surface/40">
-                        <TableCell className="text-text-muted text-sm w-10">{i + 1}</TableCell>
+                      <TableRow key={r.id} className="hover:bg-muted/40">
+                        <TableCell className="text-muted-foreground text-sm w-10">{i + 1}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -449,13 +449,13 @@ export default function AttendancePage() {
                                 {r.member.name.charAt(0).toUpperCase()}
                               </span>
                             </div>
-                            <span className="font-medium text-text">{r.member.name}</span>
+                            <span className="font-medium text-foreground">{r.member.name}</span>
                           </div>
                         </TableCell>
-                        <TableCell className="text-text-muted text-sm">
+                        <TableCell className="text-muted-foreground text-sm">
                           {r.markedBy?.name || '—'}
                         </TableCell>
-                        <TableCell className="text-text-muted text-sm">
+                        <TableCell className="text-muted-foreground text-sm">
                           {format(new Date(r.createdAt), 'hh:mm a')}
                         </TableCell>
                       </TableRow>
@@ -465,11 +465,11 @@ export default function AttendancePage() {
               </div>
             ) : (
               <div className="text-center py-16">
-                <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-text-muted" />
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <p className="text-text font-medium mb-1">No attendance marked yet today</p>
-                <p className="text-text-muted text-sm">Search a member above to get started</p>
+                <p className="text-foreground font-medium mb-1">No attendance marked yet today</p>
+                <p className="text-muted-foreground text-sm">Search a member above to get started</p>
               </div>
             )}
           </div>
@@ -482,7 +482,7 @@ export default function AttendancePage() {
       {selectedMember && (
         <>
           {/* Member card + mark panel */}
-          <Card className="bg-card border-border p-6 mb-6">
+          <Card className="p-5 mb-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -490,12 +490,12 @@ export default function AttendancePage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-lg font-bold text-text">{selectedMember.name}</h3>
+                    <h3 className="text-lg font-bold text-foreground">{selectedMember.name}</h3>
                     <Badge className={selectedMember.isActive ? 'bg-success/20 text-success' : 'bg-destructive/20 text-destructive'}>
                       {selectedMember.isActive ? 'Active' : 'Inactive'}
                     </Badge>
                   </div>
-                  <div className="flex flex-wrap gap-3 mt-1 text-sm text-text-muted">
+                  <div className="flex flex-wrap gap-3 mt-1 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Phone className="w-3.5 h-3.5" /> {selectedMember.phone}
                     </span>
@@ -514,10 +514,10 @@ export default function AttendancePage() {
                   value={selectedDate}
                   max={todayStr()}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-surface border-border text-text h-9 text-sm w-40"
+                  className="h-9 text-sm w-40"
                 />
                 {isCheckingRecord || dateRecord === undefined ? (
-                  <div className="flex items-center gap-2 text-text-muted text-sm px-3 py-2">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm px-3 py-2">
                     <Loader2 className="w-4 h-4 animate-spin" /> Checking...
                   </div>
                 ) : dateRecord ? (
@@ -531,7 +531,7 @@ export default function AttendancePage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-text-muted hover:text-destructive gap-1 h-9"
+                      className="text-muted-foreground hover:text-destructive gap-1 h-9"
                       disabled={undoingId === dateRecord.id}
                       onClick={() => undoAttendance(dateRecord)}
                     >
@@ -541,7 +541,7 @@ export default function AttendancePage() {
                   </div>
                 ) : (
                   <Button
-                    className="bg-primary hover:bg-primary/90 text-white gap-2"
+                    className="gap-2"
                     disabled={isMarking}
                     onClick={markPresent}
                   >
@@ -554,12 +554,12 @@ export default function AttendancePage() {
           </Card>
 
           {/* ── Lifetime stats ────────────────────────────────────────────── */}
-          <Card className="bg-card border-border p-5 mb-6">
+          <Card className="p-5 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-text">
+              <span className="text-sm font-semibold text-foreground">
                 Overall since{' '}
-                <span className="text-text-muted font-normal">
+                <span className="text-muted-foreground font-normal">
                   {format(parseISO(selectedMember.joinDate), 'MMM dd, yyyy')}
                 </span>
               </span>
@@ -571,44 +571,44 @@ export default function AttendancePage() {
             ) : summary ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-text-muted mb-1">Total Days</p>
-                  <p className="text-2xl font-bold text-text">{summary.totalDays}</p>
+                  <p className="text-xs text-muted-foreground mb-1">Total Days</p>
+                  <p className="text-2xl font-bold text-foreground">{summary.totalDays}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-text-muted mb-1">Present</p>
+                  <p className="text-xs text-muted-foreground mb-1">Present</p>
                   <p className="text-2xl font-bold text-success">{summary.presentCount}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-text-muted mb-1">Absent</p>
+                  <p className="text-xs text-muted-foreground mb-1">Absent</p>
                   <p className="text-2xl font-bold text-destructive">{summary.absentCount}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-text-muted mb-1">Lifetime Rate</p>
-                  <p className="text-2xl font-bold text-accent">{summary.rate}%</p>
+                  <p className="text-xs text-muted-foreground mb-1">Lifetime Rate</p>
+                  <p className="text-2xl font-bold text-primary">{summary.rate}%</p>
                 </div>
               </div>
             ) : null}
           </Card>
 
           {/* ── Monthly history ───────────────────────────────────────────── */}
-          <Card className="bg-card border-border overflow-hidden">
+          <Card className="overflow-hidden">
             <div className="p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-text">
+                  <h3 className="text-lg font-semibold text-foreground">
                     {format(parseISO(historyMonth + '-01'), 'MMMM yyyy')}
                   </h3>
                   {!isLoadingHistory && (
-                    <p className="text-sm text-text-muted mt-0.5">
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       {monthPresent} present · {monthTotal - monthPresent} absent · {monthRate}% rate
                     </p>
                   )}
                 </div>
                 <Select value={historyMonth} onValueChange={setHistoryMonth}>
-                  <SelectTrigger className="w-44 bg-surface border-border text-text h-9 text-sm">
+                  <SelectTrigger className="w-44 h-9 text-sm">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-border">
+                  <SelectContent>
                     {monthOptions.map((o) => (
                       <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
                     ))}
@@ -621,10 +621,10 @@ export default function AttendancePage() {
                   {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
                 </div>
               ) : (
-                <div className="border border-border rounded-lg overflow-hidden">
+                <div className="rounded-xl border border-border/50 overflow-hidden">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-surface/50">
+                      <TableRow className="bg-muted/40">
                         <TableHead>Date</TableHead>
                         <TableHead>Day</TableHead>
                         <TableHead>Status</TableHead>
@@ -639,27 +639,27 @@ export default function AttendancePage() {
                         return (
                           <TableRow
                             key={date.toISOString()}
-                            className={record ? 'hover:bg-surface/40' : 'hover:bg-surface/20'}
+                            className={record ? 'hover:bg-muted/40' : 'hover:bg-muted/20'}
                           >
                             <TableCell className="font-medium">{format(date, 'dd MMM yyyy')}</TableCell>
-                            <TableCell className="text-text-muted">{format(date, 'EEE')}</TableCell>
+                            <TableCell className="text-muted-foreground">{format(date, 'EEE')}</TableCell>
                             <TableCell>
                               {record ? (
                                 <Badge className="bg-success/20 text-success gap-1">
                                   <CheckCircle className="w-3 h-3" /> Present
                                 </Badge>
                               ) : (
-                                <span className="text-text-muted text-sm">Absent</span>
+                                <span className="text-muted-foreground text-sm">Absent</span>
                               )}
                             </TableCell>
-                            <TableCell className="text-text-muted text-sm">
+                            <TableCell className="text-muted-foreground text-sm">
                               {record?.markedBy?.name ?? '—'}
                             </TableCell>
                             <TableCell className="text-right">
                               {record ? (
                                 <Button
                                   variant="ghost" size="sm"
-                                  className="h-7 px-2 text-text-muted hover:text-destructive"
+                                  className="h-7 px-2 text-muted-foreground hover:text-destructive"
                                   disabled={undoingId === record.id}
                                   onClick={() => undoAttendance(record)}
                                   title="Remove this mark"
@@ -671,7 +671,7 @@ export default function AttendancePage() {
                               ) : (
                                 <Button
                                   variant="ghost" size="sm"
-                                  className="h-7 px-2 text-text-muted hover:text-success gap-1 text-xs"
+                                  className="h-7 px-2 text-muted-foreground hover:text-success gap-1 text-xs"
                                   disabled={isMarkingThis}
                                   onClick={() => markPresentForDate(dateStr)}
                                   title="Mark as present"

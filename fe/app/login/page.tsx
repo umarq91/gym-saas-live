@@ -35,66 +35,56 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-sm">
         {/* Logo & Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-lg">
-              <Dumbbell className="w-6 h-6 text-white" />
+          <div className="flex items-center justify-center gap-2.5 mb-3">
+            <div className="bg-primary rounded-xl p-2.5">
+              <Dumbbell className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl font-bold text-balance">
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                FitFlow
-              </span>
-            </h1>
+            <h1 className="text-xl font-bold text-foreground tracking-tight">FitFlow</h1>
           </div>
-          <p className="text-text-muted">Gym Management SaaS Dashboard</p>
+          <p className="text-sm text-muted-foreground">Gym Management Platform</p>
         </div>
 
         {/* Login Card */}
-        <Card className="bg-card border-border p-8">
-          <h2 className="text-xl font-semibold mb-6">Sign In</h2>
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-foreground mb-5">Sign in to your account</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Error Messages */}
             {(formError || error) && (
-              <div className="bg-destructive/10 border border-destructive text-destructive text-sm p-3 rounded-md">
+              <div className="bg-destructive/10 border border-destructive/30 text-destructive text-sm p-3 rounded-lg">
                 {formError || error}
               </div>
             )}
 
-            {/* Email Input */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email or Username</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-sm">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="admin@fitflow.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-surface text-text border-border"
                 disabled={isLoading}
               />
             </div>
 
-            {/* Password Input */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-sm">Password</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-surface text-text border-border"
                 disabled={isLoading}
               />
             </div>
 
-            {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-foreground text-white mt-6"
+              className="w-full mt-2"
               disabled={isLoading}
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
@@ -102,30 +92,14 @@ export default function LoginPage() {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-text-muted mb-3">Demo Credentials:</p>
-            <div className="space-y-1 text-xs text-text-muted">
-              <p><span className="font-mono bg-surface px-2 py-1 rounded">admin@fitflow.com</span></p>
-              <p><span className="font-mono bg-surface px-2 py-1 rounded">password123</span></p>
+          <div className="mt-5 pt-5 border-t border-border/50">
+            <p className="text-xs text-muted-foreground mb-2">Demo credentials</p>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <p><code className="bg-muted px-1.5 py-0.5 rounded text-foreground">admin@fitflow.com</code></p>
+              <p><code className="bg-muted px-1.5 py-0.5 rounded text-foreground">password123</code></p>
             </div>
           </div>
         </Card>
-
-        {/* Features Info */}
-        <div className="mt-8 grid grid-cols-3 gap-3 text-center text-xs">
-          <div className="bg-card/50 border border-border p-3 rounded-md">
-            <p className="text-primary font-semibold">👥</p>
-            <p className="text-text-muted mt-1">Members</p>
-          </div>
-          <div className="bg-card/50 border border-border p-3 rounded-md">
-            <p className="text-accent font-semibold">📊</p>
-            <p className="text-text-muted mt-1">Analytics</p>
-          </div>
-          <div className="bg-card/50 border border-border p-3 rounded-md">
-            <p className="text-secondary font-semibold">💰</p>
-            <p className="text-text-muted mt-1">Billing</p>
-          </div>
-        </div>
       </div>
     </div>
   );

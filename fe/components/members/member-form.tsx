@@ -77,12 +77,12 @@ export function MemberForm({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="bg-card border-border">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-text">
+          <DialogTitle>
             {member ? 'Edit Member' : 'Add New Member'}
           </DialogTitle>
-          <DialogDescription className="text-text-muted">
+          <DialogDescription>
             {member
               ? 'Update member information'
               : 'Add a new member to your gym'}
@@ -90,79 +90,69 @@ export function MemberForm({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-          {/* Name */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label htmlFor="name">Name *</Label>
             <Input
               id="name"
               placeholder="John Doe"
               {...register('name')}
-              className="bg-surface border-border text-text"
               disabled={isLoading}
             />
             {errors.name && (
-              <p className="text-sm text-destructive">{errors.name.message}</p>
+              <p className="text-xs text-destructive">{errors.name.message}</p>
             )}
           </div>
 
-          {/* Email */}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email *</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="john@example.com"
               {...register('email')}
-              className="bg-surface border-border text-text"
               disabled={isLoading}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
+              <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
-          {/* Phone */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label htmlFor="phone">Phone *</Label>
             <Input
               id="phone"
               type="tel"
-              placeholder="+1-234-567-8900"
+              placeholder="03001234567"
               {...register('phone')}
-              className="bg-surface border-border text-text"
               disabled={isLoading}
             />
             {errors.phone && (
-              <p className="text-sm text-destructive">{errors.phone.message}</p>
+              <p className="text-xs text-destructive">{errors.phone.message}</p>
             )}
           </div>
 
-          {/* Emergency Contact */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label htmlFor="emergency_contact">Emergency Contact</Label>
             <Input
               id="emergency_contact"
               placeholder="Contact name"
               {...register('emergency_contact')}
-              className="bg-surface border-border text-text"
               disabled={isLoading}
             />
           </div>
 
-          {/* Notes */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label htmlFor="notes">Notes</Label>
             <Textarea
               id="notes"
               placeholder="Additional notes..."
               {...register('notes')}
-              className="bg-surface border-border text-text min-h-24"
+              className="min-h-20"
               disabled={isLoading}
             />
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-3 justify-end pt-4">
+          <div className="flex gap-3 justify-end pt-2">
             <Button
               type="button"
               variant="outline"
@@ -173,7 +163,6 @@ export function MemberForm({
             </Button>
             <Button
               type="submit"
-              className="bg-primary hover:bg-primary-dark text-white"
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Save Member'}
