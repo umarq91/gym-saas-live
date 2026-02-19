@@ -2,11 +2,10 @@
 export interface Member {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   joinDate: string;
-  status: 'ACTIVE' | 'INACTIVE';
-  membershipType?: string;
+  isActive: boolean;
   emergency_contact?: string;
   notes?: string;
   createdAt: string;
@@ -15,9 +14,8 @@ export interface Member {
 
 export interface CreateMemberInput {
   name: string;
-  email: string;
+  email?: string;
   phone: string;
-  membershipType?: string;
   emergency_contact?: string;
   notes?: string;
 }
@@ -26,8 +24,7 @@ export interface UpdateMemberInput {
   name?: string;
   email?: string;
   phone?: string;
-  status?: 'ACTIVE' | 'INACTIVE';
-  membershipType?: string;
+  isActive?: boolean;
   emergency_contact?: string;
   notes?: string;
 }

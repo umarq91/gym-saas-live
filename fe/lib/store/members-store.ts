@@ -153,7 +153,7 @@ export const useMembersStore = create<MembersState>((set, get) => ({
     const { members } = get();
     const filtered = members.filter((member) =>
       member.name.toLowerCase().includes(query.toLowerCase()) ||
-      member.email.toLowerCase().includes(query.toLowerCase()) ||
+      member.email?.toLowerCase().includes(query.toLowerCase()) ||
       member.phone.includes(query)
     );
     set({ filteredMembers: filtered });

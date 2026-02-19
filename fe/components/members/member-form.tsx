@@ -19,9 +19,8 @@ import { Member } from '@/lib/types';
 
 const memberSchema = z.object({
   name: z.string().min(2, 'Name is required'),
-  email: z.string().email('Invalid email'),
-  phone: z.string().min(10, 'Invalid phone number'),
-  membershipType: z.string().optional(),
+  email: z.string().email('Invalid email').optional().or(z.literal('')),
+  phone: z.string().length(11, 'Phone number must be 11 digits'),
   emergency_contact: z.string().optional(),
   notes: z.string().optional(),
 });
@@ -53,9 +52,8 @@ export function MemberForm({
     defaultValues: member
       ? {
           name: member.name,
-          email: member.email,
+          email: member.email ?? '',
           phone: member.phone,
-          membershipType: member.membershipType,
           emergency_contact: member.emergency_contact,
           notes: member.notes,
         }
@@ -137,18 +135,6 @@ export function MemberForm({
             {errors.phone && (
               <p className="text-sm text-destructive">{errors.phone.message}</p>
             )}
-          </div>
-
-          {/* Membership Type */}
-          <div className="space-y-2">
-            <Label htmlFor="membershipType">Membership Type</Label>
-            <Input
-              id="membershipType"
-              placeholder="Premium, Standard, Basic"
-              {...register('membershipType')}
-              className="bg-surface border-border text-text"
-              disabled={isLoading}
-            />
           </div>
 
           {/* Emergency Contact */}

@@ -88,6 +88,9 @@ export const getMemberAttendance = async (
           lte: to ? new Date(to as string) : undefined,
         },
       },
+      include: {
+        markedBy: { select: { id: true, name: true } },
+      },
       orderBy: { date: "desc" },
     });
 
@@ -136,9 +139,9 @@ export const getGymAttendanceByDate = async (
 };
 
 /**
- * UPDATE ATTENDANCE
+ * DELETE ATTENDANCE (undo an accidental mark)
  */
-export const updateAttendance = async (
+export const deleteAttendance = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -146,7 +149,6 @@ export const updateAttendance = async (
   try {
     const { user } = req as GymRequest;
     const { attendanceId } = req.params;
-    const { status } = req.body;
 
     const attendance = await prisma.attendance.findFirst({
       where: { id: attendanceId, gymId: user.gymId },
@@ -156,14 +158,61 @@ export const updateAttendance = async (
       throw new ApiError("Attendance record not found", 404);
     }
 
-    await prisma.attendance.update({
-      where: { id: attendanceId },
-      data: { status },
-    });
+    await prisma.attendance.delete({ where: { id: attendanceId } });
 
     return sendResponse(res, {
       statusCode: 200,
-      message: "Attendance updated successfully",
+      message: "Attendance record removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET MEMBER ATTENDANCE SUMMARY (lifetime stats since join date)
+ * /attendance/member/:memberId/summary
+ */
+export const getMemberAttendanceSummary = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { user } = req as GymRequest;
+    const { memberId } = req.params;
+
+    const member = await prisma.member.findFirst({
+      where: { id: memberId, gymId: user.gymId },
+      select: { id: true, joinDate: true },
+    });
+
+    if (!member) {
+      throw new ApiError("Gym member not found", 404);
+    }
+
+    const presentCount = await prisma.attendance.count({
+      where: { memberId, gymId: user.gymId, status: "PRESENT" },
+    });
+
+    // Count non-Sunday days from join date to today (inclusive)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const cursor = new Date(member.joinDate);
+    cursor.setHours(0, 0, 0, 0);
+
+    let totalDays = 0;
+    while (cursor <= today) {
+      if (cursor.getDay() !== 0) totalDays++;
+      cursor.setDate(cursor.getDate() + 1);
+    }
+
+    const rate = totalDays > 0 ? Math.round((presentCount / totalDays) * 100) : 0;
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Attendance summary fetched successfully",
+      data: { presentCount, totalDays, absentCount: totalDays - presentCount, rate },
     });
   } catch (error) {
     next(error);
